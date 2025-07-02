@@ -195,10 +195,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progress_dark: {
-    color: '#FF9CB5',
+    color: 'grey',
   },
   progress_light: {
-    color: 'grey',
+    color: '#FF9CB5',
   },
 });
 
