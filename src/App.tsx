@@ -10,7 +10,23 @@ import {
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as Progress from 'react-native-progress';
 import { Circle } from 'react-native-svg';
-// import SQLite from 'react-native-sqlite-storage';
+import * as db from './db-functions';
+
+const showAlert = () => {
+  Alert.alert(
+    'Alert Title',
+    'This is the alert message.',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ],
+    { cancelable: true },
+  );
+};
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -23,36 +39,43 @@ function App() {
   const [carbGoal, setcarbGoal] = useState(230);
   const [carbProgress, setcarbProgress] = useState(150);
 
-  const showAlert = () => {
-    Alert.alert(
-      'Alert Title',
-      'This is the alert message.',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ],
-      { cancelable: true },
-    );
-  };
+  const currentDate: Date = new Date();
+  const formattedDate: string = currentDate.toLocaleDateString();
 
   return (
-    <View style={[styles.container, { flex: 1 }]}>
-      <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: '#FFE9EF',
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+        },
+      ]}
+    >
+      <View style={[styles.container, { marginTop: 100 }]}>
+        <Text
+          style={[
+            isDarkMode ? styles.progress_dark : styles.progress_light,
+            { fontSize: 60, marginBottom: 20, fontWeight: 700 },
+          ]}
+        >
+          {' '}
+          {formattedDate}
+        </Text>
         <AnimatedCircularProgress
           size={300}
           width={15}
           fill={(calProgress / calGoal) * 100}
-          tintColor="#00d0ee"
-          backgroundColor="#3d5875"
+          tintColor="#FF9CB5"
+          backgroundColor="#FC809F"
           padding={10}
           arcSweepAngle={270}
           rotation={225}
+          lineCap="round"
           renderCap={({ center }) => (
-            <Circle cx={center.x} cy={center.y} r="10" fill="#00f0ff" />
+            <Circle cx={center.x} cy={center.y} r="14" fill="#FF9CB5" />
           )}
         >
           {() => (
@@ -65,15 +88,26 @@ function App() {
               >
                 {calProgress}
               </Text>
-              <Text style={[{ fontSize: 30, color: 'grey' }]}>Left</Text>
-              <Text style={[{ fontSize: 40, color: 'grey', marginTop: -5 }]}>
+              <Text
+                style={[{ fontSize: 30, color: '#FFBCCD', fontWeight: 500 }]}
+              >
+                Left
+              </Text>
+              <Text
+                style={[
+                  {
+                    fontSize: 40,
+                    color: '#FFBCCD',
+                    fontWeight: 500,
+                    marginTop: -5,
+                  },
+                ]}
+              >
                 {calGoal - calProgress}
               </Text>
             </>
           )}
         </AnimatedCircularProgress>
-
-        <Button title="PRESS" onPress={showAlert} />
       </View>
       <View
         style={[
@@ -88,11 +122,11 @@ function App() {
               { fontSize: 20, marginBottom: 5 },
             ]}
           >
-            Protien
+            Protein
           </Text>
           <Progress.Bar
             progress={protProgress / protGoal}
-            color="#00d0ee"
+            color="#FC809F"
             width={100}
           />
           <Text
@@ -115,7 +149,7 @@ function App() {
           </Text>
           <Progress.Bar
             progress={carbProgress / carbGoal}
-            color="#00d0ee"
+            color="#FC809F"
             width={100}
           />
           <Text
@@ -138,7 +172,7 @@ function App() {
           </Text>
           <Progress.Bar
             progress={fibProgress / fibGoal}
-            color="#00d0ee"
+            color="#FC809F"
             width={100}
           />
           <Text
@@ -161,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progress_dark: {
-    color: 'white',
+    color: '#FF9CB5',
   },
   progress_light: {
     color: 'grey',
