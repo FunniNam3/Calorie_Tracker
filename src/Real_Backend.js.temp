@@ -1,0 +1,14 @@
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase(
+  {
+    name: 'tracker.db',
+    location: '../databases',
+  },
+  () => {
+    console.log('Database opened successfully');
+  },
+  error => {
+    console.log('Error opening database:', error);
+  },
+);
