@@ -1,10 +1,13 @@
-import { createContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-// export type Theme = {
-//   backgroundColor: string;
-//   h1Color: string;
-//   h2Color: string;
-// };
+export type Theme = {
+  backgroundColor: string;
+  h1Color: string;
+  h2Color: string;
+  Progress1: string;
+  Progress2: string;
+  Footer: string;
+};
 
 export const themes = {
   light: {
@@ -13,6 +16,7 @@ export const themes = {
     h2Color: 'grey',
     Progress1: 'cyan',
     Progress2: 'blue',
+    Footer: 'blue',
   },
   dark: {
     backgroundColor: 'black',
@@ -20,6 +24,7 @@ export const themes = {
     h2Color: 'white',
     Progress1: 'cyan',
     Progress2: 'blue',
+    Footer: 'blue',
   },
   pink: {
     backgroundColor: '#FFE9EF',
@@ -27,17 +32,35 @@ export const themes = {
     h2Color: '#FFBCCD',
     Progress1: '#FF9CB5',
     Progress2: '#FC809F',
+    Footer: '#FF809F',
   },
 };
 
-export const ThemeContext = createContext(themes.pink);
+type ThemeContextType = {
+  theme: Theme;
+  setTheme: React.Dispatch<React.SetStateAction<Theme>>;
+};
 
-import React, { useState } from 'react';
+export const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined,
+);
 
-export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(themes.pink);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used in ThemeProvider');
+  }
+  return context;
+};
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [theme, setTheme] = useState<Theme>(themes.pink);
 
   return (
-    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
