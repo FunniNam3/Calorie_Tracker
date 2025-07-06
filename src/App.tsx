@@ -27,7 +27,12 @@ import { AddMeal } from './AddMeal/AddMeal';
 // };
 //////////////////////////////////////////////////////////////////////
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Main: {};
+  AddMeal: {};
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
   return (
