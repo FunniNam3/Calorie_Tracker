@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Main from './Main_Page/Main';
 import { ThemeProvider } from './Themes';
 import { GoalProvider, ProgressProvider } from './Track';
-import { Footer } from './Footer/Foot';
+import { Footer } from './Main_Page/Foot';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AddMeal } from './AddMeal/AddMeal';
+import { createTables, getDBConnection } from './db-functions';
+import { Meals } from './Meals/Meals';
 
 // So I dont forget how to write an alert for later
 //////////////////////////////////////////////////////////////////////
@@ -30,11 +32,24 @@ import { AddMeal } from './AddMeal/AddMeal';
 export type RootStackParamList = {
   Main: {};
   AddMeal: {};
+  Meals: {};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
+  useEffect(() => {
+    const loadMeals = async () => {
+      try {
+        const db = await getDBConnection();
+        createTables(db);
+      } catch (error) {
+        console.error('Failed to create Tables', error);
+      }
+    };
+
+    loadMeals();
+  }, []);
   return (
     <ThemeProvider>
       <GoalProvider>
@@ -43,8 +58,8 @@ function App() {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="AddMeal" component={AddMeal} />
+              <Stack.Screen name="Meals" component={Meals} />
             </Stack.Navigator>
-            <Footer />
           </NavigationContainer>
         </ProgressProvider>
       </GoalProvider>

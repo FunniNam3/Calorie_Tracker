@@ -12,7 +12,7 @@ const mealtable = 'meals';
 
 enablePromise(true);
 
-export const detDBConnection = async () => {
+export const getDBConnection = async () => {
   return openDatabase({ name: DBName, location: 'default' });
 };
 
