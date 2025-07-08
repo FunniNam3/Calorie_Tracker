@@ -3,6 +3,11 @@ import { Text, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Circle } from 'react-native-svg';
 import { useTheme } from '../Themes';
+import {
+  getTodayBreakfastItems,
+  getTodayLunchItems,
+  getTodayDinnerItems,
+} from '../db-functions';
 
 export const Table: React.FC = () => {
   const { theme } = useTheme();
@@ -11,15 +16,18 @@ export const Table: React.FC = () => {
       style={{
         flexGrow: 1,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
+        gap: '7%',
         alignItems: 'flex-start',
+        justifyContent: 'center',
         width: '100%',
+        marginTop: 10,
       }}
     >
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
         }}
       >
@@ -39,14 +47,21 @@ export const Table: React.FC = () => {
         >
           {() => <Text style={{ fontSize: 30 }}>🍳</Text>}
         </AnimatedCircularProgress>
-        <Text style={{ color: theme.h1Color, fontWeight: 500, fontSize: 20 }}>
+        <Text
+          style={{
+            color: theme.h1Color,
+            fontWeight: 500,
+            fontSize: 20,
+            marginTop: -15,
+          }}
+        >
           Breakfast
         </Text>
       </View>
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
         }}
       >
@@ -66,14 +81,21 @@ export const Table: React.FC = () => {
         >
           {() => <Text style={{ fontSize: 20 }}>🍔</Text>}
         </AnimatedCircularProgress>
-        <Text style={{ color: theme.h1Color, fontWeight: 500, fontSize: 20 }}>
+        <Text
+          style={{
+            color: theme.h1Color,
+            fontWeight: 500,
+            fontSize: 20,
+            marginTop: -15,
+          }}
+        >
           Lunch
         </Text>
       </View>
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
         }}
       >
@@ -93,7 +115,14 @@ export const Table: React.FC = () => {
         >
           {() => <Text style={{ fontSize: 20 }}>🍖</Text>}
         </AnimatedCircularProgress>
-        <Text style={{ color: theme.h1Color, fontWeight: 500, fontSize: 20 }}>
+        <Text
+          style={{
+            color: theme.h1Color,
+            fontWeight: 500,
+            fontSize: 20,
+            marginTop: -15,
+          }}
+        >
           Dinner
         </Text>
       </View>

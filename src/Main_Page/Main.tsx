@@ -50,11 +50,10 @@ function Main() {
           },
         ]}
       >
-        <View style={[styles.container, { marginTop: 50 }]}>
+        <View style={[styles.container, { marginTop: 60 }]}>
           <Text
             style={{
               fontSize: 60,
-              marginBottom: 20,
               fontWeight: 700,
               color: theme.h1Color,
             }}
@@ -83,12 +82,18 @@ function Main() {
           >
             {() => (
               <>
-                <Text style={{ fontSize: 60, color: theme.h1Color }}>
-                  {progress.calories}
+                <Text
+                  style={{
+                    fontSize: 40,
+                    color: theme.h1Color,
+                    fontWeight: 500,
+                  }}
+                >
+                  {progress.calories} kcal
                 </Text>
                 <Text
                   style={[
-                    { fontSize: 30, color: theme.h2Color, fontWeight: 500 },
+                    { fontSize: 25, color: theme.h2Color, fontWeight: 500 },
                   ]}
                 >
                   Left
@@ -96,14 +101,14 @@ function Main() {
                 <Text
                   style={[
                     {
-                      fontSize: 40,
+                      fontSize: 30,
                       color: theme.h2Color,
                       fontWeight: 500,
                       marginTop: -5,
                     },
                   ]}
                 >
-                  {goal.calories - progress.calories}
+                  {goal.calories - progress.calories} kcal
                 </Text>
               </>
             )}

@@ -97,6 +97,72 @@ export const getTodayMealItems = async (
   }
 };
 
+export const getTodayBreakfastItems = async (
+  db: SQLiteDatabase,
+): Promise<MealItem[]> => {
+  try {
+    const currentDate: Date = new Date();
+    const formattedDate: string = currentDate.toLocaleDateString();
+    const mealItems: MealItem[] = [];
+    const results = await db.executeSql(
+      `SELECT * FROM ${mealtable} where day = ${formattedDate} && type = 0`,
+    );
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        mealItems.push(result.rows.item(index));
+      }
+    });
+    return mealItems;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get mealItems!');
+  }
+};
+
+export const getTodayLunchItems = async (
+  db: SQLiteDatabase,
+): Promise<MealItem[]> => {
+  try {
+    const currentDate: Date = new Date();
+    const formattedDate: string = currentDate.toLocaleDateString();
+    const mealItems: MealItem[] = [];
+    const results = await db.executeSql(
+      `SELECT * FROM ${mealtable} where day = ${formattedDate} && type = 1`,
+    );
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        mealItems.push(result.rows.item(index));
+      }
+    });
+    return mealItems;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get mealItems!');
+  }
+};
+
+export const getTodayDinnerItems = async (
+  db: SQLiteDatabase,
+): Promise<MealItem[]> => {
+  try {
+    const currentDate: Date = new Date();
+    const formattedDate: string = currentDate.toLocaleDateString();
+    const mealItems: MealItem[] = [];
+    const results = await db.executeSql(
+      `SELECT * FROM ${mealtable} where day = ${formattedDate} && type = 2`,
+    );
+    results.forEach(result => {
+      for (let index = 0; index < result.rows.length; index++) {
+        mealItems.push(result.rows.item(index));
+      }
+    });
+    return mealItems;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get mealItems!');
+  }
+};
+
 export const saveFoodItems = async (
   db: SQLiteDatabase,
   foodItems: FoodItem[],
