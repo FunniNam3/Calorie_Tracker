@@ -6,7 +6,7 @@ import { GoalProvider, ProgressProvider } from './Track';
 import { Footer } from './Main_Page/Foot';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AddMeal } from './AddMeal/AddMeal';
+import { AddMeal } from './AddStuff/AddMeal';
 import { createTables, getDBConnection } from './db-functions';
 import { Meals } from './Meals/Meals';
 
