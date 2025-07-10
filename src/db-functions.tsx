@@ -179,6 +179,24 @@ export const saveFoodItems = async (
   return db.executeSql(insertQuery);
 };
 
+export const saveFoodItem = async (db: SQLiteDatabase, foodItem: FoodItem) => {
+  const insertQuery = `
+    INSERT OR REPLACE INTO ${foodtable}
+    (name, calories, carbs, protein, fiber)
+    VALUES (?, ?, ?, ?, ?);
+  `;
+
+  const params = [
+    foodItem.name,
+    foodItem.calories,
+    foodItem.carbs,
+    foodItem.protein,
+    foodItem.fiber,
+  ];
+
+  return db.executeSql(insertQuery, params);
+};
+
 export const saveMealItems = async (
   db: SQLiteDatabase,
   mealItems: MealItem[],
@@ -193,6 +211,27 @@ export const saveMealItems = async (
       .join(',');
 
   return db.executeSql(insertQuery);
+};
+
+export const saveMealItem = async (db: SQLiteDatabase, mealItem: MealItem) => {
+  const insertQuery = `
+    INSERT OR REPLACE INTO ${mealtable}
+    (day, type, foods, servings, calories, carbs, protein, fiber)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+  `;
+
+  const params = [
+    mealItem.day,
+    mealItem.type,
+    mealItem.foods,
+    mealItem.servings,
+    mealItem.calories,
+    mealItem.carbs,
+    mealItem.protein,
+    mealItem.fiber,
+  ];
+
+  return db.executeSql(insertQuery, params);
 };
 
 export const deleteFoodItem = async (db: SQLiteDatabase, id: number) => {

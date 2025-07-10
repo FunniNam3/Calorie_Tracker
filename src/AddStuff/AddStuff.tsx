@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 import { styles } from '../App';
 import { useTheme } from '../Themes';
-import {
-  getDBConnection,
-  getFoodItems,
-  getTodayMealItems,
-} from '../db-functions';
 import { AddFeet } from './AddFeet';
 import { Picker } from '@react-native-picker/picker';
-import { SQLiteDatabase } from 'react-native-sqlite-storage';
+import { FoodItem } from '../Items';
+import { AddFood } from './AddFood/AddFood';
+import { AddMeal } from './AddMeal/AddMeal';
 
-export const AddMeal = () => {
+export const AddStuff = () => {
   const mealOptions = ['Food', 'Meal'];
+  const [foods, setFoods] = useState<FoodItem[]>();
   const { theme } = useTheme();
   const [type, setType] = useState(0);
-  const getFood = async () => {
-    try {
-      const db = await getDBConnection();
-      const food = getFoodItems(db);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getFood();
-  });
 
   return (
     <View
@@ -50,6 +35,7 @@ export const AddMeal = () => {
       >
         <View
           style={{
+            marginTop: 20,
             width: '100%',
             flexDirection: 'column',
             gap: 25,
@@ -67,12 +53,14 @@ export const AddMeal = () => {
           <View style={[styles.container, { flex: 1, width: '100%' }]}>
             <Picker
               selectedValue={type}
-              onValueChange={(itemValue, itemIndex) => setType(itemValue)}
+              onValueChange={(itemValue, itemIndex) => {
+                setType(itemValue);
+              }}
               prompt="What are you adding:"
               style={{
                 height: 50,
                 width: '100%',
-                color: theme.h1Color,
+                color: theme.backgroundColor,
                 backgroundColor: theme.Progress2,
                 maxWidth: '80%',
               }}
@@ -83,6 +71,8 @@ export const AddMeal = () => {
             </Picker>
           </View>
         </View>
+        {type == 0 && <AddFood />}
+        {type == 1 && <AddMeal />}
       </View>
       <AddFeet />
     </View>

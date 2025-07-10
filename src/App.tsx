@@ -6,9 +6,9 @@ import { GoalProvider, ProgressProvider } from './Track';
 import { Footer } from './Main_Page/Foot';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AddMeal } from './AddStuff/AddMeal';
+import { AddStuff } from './AddStuff/AddStuff';
 import { createTables, getDBConnection } from './db-functions';
-import { Meals } from './Meals/Meals';
+import { List } from './Meals/List';
 
 // So I dont forget how to write an alert for later
 //////////////////////////////////////////////////////////////////////
@@ -57,8 +57,8 @@ function App() {
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Main" component={Main} />
-              <Stack.Screen name="AddMeal" component={AddMeal} />
-              <Stack.Screen name="Meals" component={Meals} />
+              <Stack.Screen name="AddMeal" component={AddStuff} />
+              <Stack.Screen name="Meals" component={List} />
             </Stack.Navigator>
           </NavigationContainer>
         </ProgressProvider>
