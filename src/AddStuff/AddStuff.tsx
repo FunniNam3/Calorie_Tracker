@@ -9,8 +9,7 @@ import { AddFood } from './AddFood/AddFood';
 import { AddMeal } from './AddMeal/AddMeal';
 
 export const AddStuff = () => {
-  const mealOptions = ['Food', 'Meal'];
-  const [foods, setFoods] = useState<FoodItem[]>();
+  const mealOptions = ['Meal', 'Food'];
   const { theme } = useTheme();
   const [type, setType] = useState(0);
 
@@ -71,8 +70,8 @@ export const AddStuff = () => {
             </Picker>
           </View>
         </View>
-        {type == 0 && <AddFood />}
-        {type == 1 && <AddMeal />}
+        {type == 0 && <AddMeal />}
+        {type == 1 && <AddFood />}
       </View>
       <AddFeet />
     </View>

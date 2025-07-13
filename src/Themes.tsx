@@ -7,6 +7,8 @@ export type Theme = {
   Progress1: string;
   Progress2: string;
   Footer: string;
+  Select1: string;
+  Select2: string;
 };
 
 export const themes = {
@@ -17,6 +19,8 @@ export const themes = {
     Progress1: 'cyan',
     Progress2: 'blue',
     Footer: 'blue',
+    Select1: 'black',
+    Select2: 'grey',
   },
   dark: {
     backgroundColor: 'black',
@@ -25,6 +29,8 @@ export const themes = {
     Progress1: 'cyan',
     Progress2: 'blue',
     Footer: 'blue',
+    Select1: 'black',
+    Select2: 'grey',
   },
   pink: {
     backgroundColor: '#FFE9EF',
@@ -33,6 +39,8 @@ export const themes = {
     Progress1: '#FF9CB5',
     Progress2: '#FC809F',
     Footer: '#FF809F',
+    Select1: '#FFE9EF',
+    Select2: 'grey',
   },
 };
 

@@ -7,6 +7,7 @@ import { useTheme } from '../Themes';
 import { useNavigation } from '@react-navigation/native';
 
 export const Meals = () => {
+  const typeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   const [meals, setMeals] = useState<MealItem[]>([]);
   const { theme } = useTheme();
   const navigation = useNavigation();
@@ -32,8 +33,8 @@ export const Meals = () => {
         renderItem={({ item }) => (
           <View style={{ padding: 10 }}>
             <Text>Id: {item.id}</Text>
-            <Text>day: {item.day.toLocaleDateString()}</Text>
-            <Text>type: {item.type}</Text>
+            <Text>day: {new Date(item.day).toLocaleDateString()}</Text>
+            <Text>type: {typeOptions[item.type]}</Text>
             <Text>foods: {item.foods}</Text>
             <Text>servings: {item.servings}</Text>
           </View>

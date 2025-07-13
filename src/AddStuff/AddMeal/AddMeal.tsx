@@ -1,26 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { Button, TextInput, View, Text, ScrollView } from 'react-native';
 import { styles } from '../../App';
 import { useTheme } from '../../Themes';
-import { getDBConnection, saveMealItem } from '../../db-functions';
+import {
+  createTables,
+  deleteMealItem,
+  deleteMealTable,
+  getDBConnection,
+  getFoodItems,
+  saveMealItem,
+} from '../../db-functions';
 import { FoodItem, MealItem } from '../../Items';
 import { Picker } from '@react-native-picker/picker';
 import MultiSelect from 'react-native-multiple-select';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDown,
+  faLessThan,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { dropDB } from '../../Secret_Backend';
 
 export const AddMeal = () => {
   const { theme } = useTheme();
   const typeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   const [type, setType] = useState(0);
+  const [selectedFoods, setSelectedFoods] = useState<number[]>([]);
   const [foods, setFoods] = useState<FoodItem[]>([]);
-  const getFoodItems: FoodItem[] = [];
-  //   const [cal, setCal] = useState('');
-  //   const [carb, setCarb] = useState('');
-  //   const [prot, setProt] = useState('');
-  //   const [fib, setFib] = useState('');
+  const [servings, setServings] = useState<{ [foodId: number]: number }>({});
+
+  const getFood = async () => {
+    const db = await getDBConnection();
+    const food = await getFoodItems(db);
+    setFoods(food);
+  };
+
+  useEffect(() => {
+    getFood();
+  }, []);
+
+  const handleServingChange = (id: number, value: string) => {
+    const num = parseFloat(value.replace(/[^0-9.]+/g, ''));
+    setServings(prev => ({ ...prev, [id]: isNaN(num) ? 0 : num }));
+  };
 
   return (
-    <View style={[styles.container, { flex: 1, width: '100%', gap: 20 }]}>
+    <View
+      style={[
+        styles.container,
+        { flexDirection: 'column', flex: 1, width: '100%', gap: 20 },
+      ]}
+    >
       <Picker
         selectedValue={type}
         onValueChange={(itemValue, itemIndex) => {
@@ -38,35 +68,108 @@ export const AddMeal = () => {
           <Picker.Item label={label} value={index} key={index} />
         ))}
       </Picker>
-      <View style={{ width: '90%' }}>
+      <View style={{ width: '80%' }}>
         <MultiSelect
           hideTags
-          items={getFoodItems}
+          items={foods}
           uniqueKey="id"
-          onSelectedItemsChange={items => {
-            setFoods(items);
-          }}
-          selectedItems={foods}
+          onSelectedItemsChange={items => setSelectedFoods(items.map(Number))}
+          selectedItems={selectedFoods}
           searchInputPlaceholderText="Search Foods..."
           displayKey="name"
           submitButtonText="Select"
-        />
-        {/* <Button
-          title="dick"
-          color={theme.h1Color}
-          onPress={async () => {
-            const db = await getDBConnection();
-            const meal: MealItem = {
-              id: 0,
-              day: new Date(),
-              type:type,
-
-            };
-            await saveMealItem(db, meal);
-            console.error('hehe');
+          noItemsText="Add food before searching"
+          searchIcon={
+            <FontAwesomeIcon
+              icon={faSearch}
+              style={{
+                color: theme.backgroundColor,
+                backgroundColor: theme.Progress2,
+              }}
+            />
+          }
+          selectedItemIconColor={theme.Select2}
+          selectedItemTextColor={theme.Select2}
+          itemTextColor={theme.Select1}
+          styleMainWrapper={{ backgroundColor: theme.Progress2 }}
+          searchInputStyle={{
+            backgroundColor: theme.Progress2,
+            color: theme.Progress2,
           }}
-        /> */}
+          styleDropdownMenu={{ backgroundColor: theme.Progress2 }}
+          styleDropdownMenuSubsection={{ backgroundColor: theme.Progress2 }}
+          styleRowList={{ backgroundColor: theme.Progress2 }}
+          styleListContainer={{ backgroundColor: theme.Progress2 }}
+          textColor={theme.backgroundColor}
+        />
       </View>
+      <ScrollView
+        style={{ flexGrow: 1, maxHeight: 200 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        {selectedFoods.map((id, index) => {
+          const food = foods.find(f => f.id === id);
+          if (!food) return null;
+          return (
+            <View key={Number(id)} style={{ marginBottom: 15 }}>
+              <Text style={{ color: theme.h1Color }}>{food.name}</Text>
+              <TextInput
+                placeholder="Servings"
+                value={servings[Number(id)]?.toString() || ''}
+                onChangeText={text => handleServingChange(Number(id), text)}
+                style={{
+                  backgroundColor: theme.Progress2,
+                  color: theme.backgroundColor,
+                  width: '80%',
+                  padding: 8,
+                  borderRadius: 10,
+                }}
+                keyboardType="decimal-pad"
+              />
+            </View>
+          );
+        })}
+      </ScrollView>
+      <Button
+        title="Save Meal"
+        color={theme.h1Color}
+        onPress={async () => {
+          console.error('pressed');
+          const selectedFoodObjects = selectedFoods
+            .map(id => foods.find(f => f.id === id))
+            .filter(Boolean) as FoodItem[];
+
+          const meal: MealItem = {
+            id: 0,
+            day: new Date(),
+            type: type,
+            foods: selectedFoodObjects.map(f => f.name).join(','),
+            servings: selectedFoodObjects
+              .map(f => servings[f.id] || 0)
+              .join(','),
+            calories: selectedFoodObjects.reduce((total, f) => {
+              const serving = servings[f.id] || 0;
+              return total + f.calories * serving;
+            }, 0),
+            carbs: selectedFoodObjects.reduce((total, f) => {
+              const serving = servings[f.id] || 0;
+              return total + f.carbs * serving;
+            }, 0),
+            protein: selectedFoodObjects.reduce((total, f) => {
+              const serving = servings[f.id] || 0;
+              return total + f.protein * serving;
+            }, 0),
+            fiber: selectedFoodObjects.reduce((total, f) => {
+              const serving = servings[f.id] || 0;
+              return total + f.fiber * serving;
+            }, 0),
+          };
+          const db = await getDBConnection();
+
+          await saveMealItem(db, meal);
+          console.error('done');
+        }}
+      />
     </View>
   );
 };

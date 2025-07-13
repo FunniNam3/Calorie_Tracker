@@ -29,7 +29,7 @@ export const AddFood = () => {
         placeholder="Calories"
         value={cal}
         onChangeText={text => {
-          const numText = text.replace(/[^0-9]/g, '');
+          const numText = text.replace(/[^0-9.]+/g, '');
           setCal(numText);
         }}
         style={{
@@ -37,13 +37,13 @@ export const AddFood = () => {
           color: theme.backgroundColor,
           width: '80%',
         }}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
       <TextInput
         placeholder="Carbs"
         value={carb}
         onChangeText={text => {
-          const numText = text.replace(/[^0-9]/g, '');
+          const numText = text.replace(/[^0-9.]+/g, '');
           setCarb(numText);
         }}
         style={{
@@ -51,13 +51,13 @@ export const AddFood = () => {
           color: theme.backgroundColor,
           width: '80%',
         }}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
       <TextInput
         placeholder="Protien"
         value={prot}
         onChangeText={text => {
-          const numText = text.replace(/[^0-9]/g, '');
+          const numText = text.replace(/[^0-9.]+/g, '');
           setProt(numText);
         }}
         style={{
@@ -65,13 +65,13 @@ export const AddFood = () => {
           color: theme.backgroundColor,
           width: '80%',
         }}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
       <TextInput
         placeholder="Fiber"
         value={fib}
         onChangeText={text => {
-          const numText = text.replace(/[^0-9]/g, '');
+          const numText = text.replace(/[^0-9.]+/g, '');
           setFib(numText);
         }}
         style={{
@@ -79,7 +79,7 @@ export const AddFood = () => {
           color: theme.backgroundColor,
           width: '80%',
         }}
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
       />
       <View>
         <Button

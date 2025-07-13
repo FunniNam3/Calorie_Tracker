@@ -46,7 +46,7 @@ function Main() {
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            paddingHorizontal: 30,
+            paddingHorizontal: 10,
           },
         ]}
       >
@@ -117,7 +117,7 @@ function Main() {
         <View
           style={[
             styles.container,
-            { flexDirection: 'row', gap: 20, marginTop: -20 },
+            { flexDirection: 'row', gap: 10, marginTop: -20 },
           ]}
         >
           <View style={styles.container}>

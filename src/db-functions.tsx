@@ -21,12 +21,12 @@ export const createTables = async (db: SQLiteDatabase) => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       day DATE NOT NULL,
       type INTEGER NOT NULL,
-      food TEXT NOT NULL,
+      foods TEXT NOT NULL,
       servings TEXT NOT NULL,
-      calories FLOAT NOT NULL,
-      carbs FLOAT NOT NULL,
-      protein FLOAT NOT NULL,
-      fiber FLOAT NOT NULL
+      calories REAL NOT NULL,
+      carbs REAL NOT NULL,
+      protein REAL NOT NULL,
+      fiber REAL NOT NULL
     );`;
 
   await db.executeSql(mealQuery);
@@ -230,7 +230,6 @@ export const saveMealItem = async (db: SQLiteDatabase, mealItem: MealItem) => {
     mealItem.protein,
     mealItem.fiber,
   ];
-
   return db.executeSql(insertQuery, params);
 };
 
