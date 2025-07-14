@@ -19,7 +19,7 @@ export const getDBConnection = async () => {
 export const createTables = async (db: SQLiteDatabase) => {
   const mealQuery = `CREATE TABLE IF NOT EXISTS ${mealtable} (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      day DATE NOT NULL,
+      day TEXT NOT NULL,
       type INTEGER NOT NULL,
       foods TEXT NOT NULL,
       servings TEXT NOT NULL,
@@ -79,12 +79,14 @@ export const getTodayMealItems = async (
   db: SQLiteDatabase,
 ): Promise<MealItem[]> => {
   try {
-    const currentDate: Date = new Date();
-    const formattedDate: string = currentDate.toLocaleDateString();
+    const currentDate = new Date().toLocaleDateString();
+
     const mealItems: MealItem[] = [];
     const results = await db.executeSql(
-      `SELECT * FROM ${mealtable} where day = ${formattedDate}`,
+      `SELECT * FROM ${mealtable} WHERE day = ?`,
+      [currentDate],
     );
+
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         mealItems.push(result.rows.item(index));
@@ -101,11 +103,11 @@ export const getTodayBreakfastItems = async (
   db: SQLiteDatabase,
 ): Promise<MealItem[]> => {
   try {
-    const currentDate: Date = new Date();
-    const formattedDate: string = currentDate.toLocaleDateString();
+    const currentDate = new Date().toLocaleDateString();
     const mealItems: MealItem[] = [];
     const results = await db.executeSql(
-      `SELECT * FROM ${mealtable} where day = ${formattedDate} && type = 0`,
+      `SELECT * FROM ${mealtable} WHERE day = ? AND type = 0`,
+      [currentDate],
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
@@ -123,11 +125,11 @@ export const getTodayLunchItems = async (
   db: SQLiteDatabase,
 ): Promise<MealItem[]> => {
   try {
-    const currentDate: Date = new Date();
-    const formattedDate: string = currentDate.toLocaleDateString();
+    const currentDate = new Date().toLocaleDateString();
     const mealItems: MealItem[] = [];
     const results = await db.executeSql(
-      `SELECT * FROM ${mealtable} where day = ${formattedDate} && type = 1`,
+      `SELECT * FROM ${mealtable} WHERE day = ? AND type = 1`,
+      [currentDate],
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
@@ -145,11 +147,11 @@ export const getTodayDinnerItems = async (
   db: SQLiteDatabase,
 ): Promise<MealItem[]> => {
   try {
-    const currentDate: Date = new Date();
-    const formattedDate: string = currentDate.toLocaleDateString();
+    const currentDate = new Date().toLocaleDateString();
     const mealItems: MealItem[] = [];
     const results = await db.executeSql(
-      `SELECT * FROM ${mealtable} where day = ${formattedDate} && type = 2`,
+      `SELECT * FROM ${mealtable} WHERE day = ? AND type = 2`,
+      [currentDate],
     );
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {

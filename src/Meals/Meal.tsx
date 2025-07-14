@@ -10,7 +10,6 @@ export const Meals = () => {
   const typeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   const [meals, setMeals] = useState<MealItem[]>([]);
   const { theme } = useTheme();
-  const navigation = useNavigation();
 
   useEffect(() => {
     const loadMeals = async () => {
@@ -25,6 +24,7 @@ export const Meals = () => {
 
     loadMeals();
   }, []);
+
   return (
     <View style={{ marginTop: 70, height: '70%' }}>
       <FlatList
@@ -33,10 +33,11 @@ export const Meals = () => {
         renderItem={({ item }) => (
           <View style={{ padding: 10 }}>
             <Text>Id: {item.id}</Text>
-            <Text>day: {new Date(item.day).toLocaleDateString()}</Text>
+            <Text>day: {item.day}</Text>
             <Text>type: {typeOptions[item.type]}</Text>
             <Text>foods: {item.foods}</Text>
             <Text>servings: {item.servings}</Text>
+            <Text>calories: {item.calories}</Text>
           </View>
         )}
         ListEmptyComponent={<Text>No Meals</Text>}

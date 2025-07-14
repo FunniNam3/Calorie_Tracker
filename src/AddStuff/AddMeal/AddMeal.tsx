@@ -141,7 +141,7 @@ export const AddMeal = () => {
 
           const meal: MealItem = {
             id: 0,
-            day: new Date(),
+            day: new Date().toLocaleDateString(),
             type: type,
             foods: selectedFoodObjects.map(f => f.name).join(','),
             servings: selectedFoodObjects

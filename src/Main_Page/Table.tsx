@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, Text, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Circle } from 'react-native-svg';
 import { useTheme } from '../Themes';
@@ -7,10 +7,40 @@ import {
   getTodayBreakfastItems,
   getTodayLunchItems,
   getTodayDinnerItems,
+  getDBConnection,
 } from '../db-functions';
+import { useGoal } from '../Track';
 
 export const Table: React.FC = () => {
   const { theme } = useTheme();
+  const { goal } = useGoal();
+  const [mealProgress, setMealProgress] = useState([0, 0, 0]);
+
+  const getMealProgress = async () => {
+    const db = await getDBConnection();
+    const breakfast = await getTodayBreakfastItems(db);
+    const lunch = await getTodayLunchItems(db);
+    const dinner = await getTodayDinnerItems(db);
+
+    const breakfastCal: number = breakfast.reduce((acc, curr) => {
+      return acc + curr.calories;
+    }, 0);
+
+    const lunchCal: number = lunch.reduce((acc, curr) => {
+      return acc + curr.calories;
+    }, 0);
+
+    const dinnerCal: number = dinner.reduce((acc, curr) => {
+      return acc + curr.calories;
+    }, 0);
+
+    setMealProgress([breakfastCal, lunchCal, dinnerCal]);
+  };
+
+  useEffect(() => {
+    getMealProgress();
+  }, []);
+
   return (
     <View
       style={{
@@ -34,7 +64,7 @@ export const Table: React.FC = () => {
         <AnimatedCircularProgress
           size={90}
           width={10}
-          fill={50}
+          fill={(mealProgress[0] * 100) / (goal.calories * 0.35)}
           tintColor={theme.Progress1}
           backgroundColor={theme.Progress2}
           padding={10}
@@ -68,7 +98,7 @@ export const Table: React.FC = () => {
         <AnimatedCircularProgress
           size={90}
           width={10}
-          fill={50}
+          fill={(mealProgress[1] * 100) / (goal.calories * 0.4)}
           tintColor={theme.Progress1}
           backgroundColor={theme.Progress2}
           padding={10}
@@ -102,7 +132,7 @@ export const Table: React.FC = () => {
         <AnimatedCircularProgress
           size={90}
           width={10}
-          fill={50}
+          fill={(mealProgress[2] * 100) / (goal.calories * 0.25)}
           tintColor={theme.Progress1}
           backgroundColor={theme.Progress2}
           padding={10}

@@ -36,7 +36,7 @@ export const Foods = () => {
             <Text>fiber: {item.fiber}</Text>
           </View>
         )}
-        ListEmptyComponent={<Text>No Meals</Text>}
+        ListEmptyComponent={<Text>No Food</Text>}
       />
     </View>
   );

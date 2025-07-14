@@ -9,7 +9,7 @@ export type FoodItem = {
 
 export type MealItem = {
   id: number;
-  day: Date;
+  day: string;
   type: number;
   foods: string;
   servings: string;

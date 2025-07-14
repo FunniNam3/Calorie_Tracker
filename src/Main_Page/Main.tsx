@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Alert, Button } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import * as Progress from 'react-native-progress';
+import * as ProgressBar from 'react-native-progress';
 import { Circle } from 'react-native-svg';
 import { useTheme } from '../Themes';
 import { useGoal, useProgress } from '../Track';
-import * as db from '../db-functions';
 import { Table } from './Table';
 import { styles } from '../App';
 import { Footer } from './Foot';
+import {
+  createTables,
+  deleteMealTable,
+  getDBConnection,
+  getTodayMealItems,
+} from '../db-functions';
+import { MealItem } from '../Items';
+import { Progress } from '../Track';
 
 const showAlert = () => {
   Alert.alert(
@@ -35,6 +42,40 @@ function Main() {
 
   const currentDate: Date = new Date();
   const formattedDate: string = currentDate.toLocaleDateString();
+
+  const loadProgress = async () => {
+    const db = await getDBConnection();
+
+    const meals: MealItem[] = await getTodayMealItems(db);
+    // console.error(meals[0].calories);
+
+    const tempProg: Progress = meals.reduce(
+      (acc, curr) => {
+        acc.calories += curr.calories;
+        acc.carbs += curr.carbs;
+        acc.protein += curr.protein;
+        acc.fiber += curr.fiber;
+        return acc;
+      },
+      {
+        id: 0,
+        day: new Date().toLocaleDateString(),
+        type: 0,
+        foods: '',
+        servings: '',
+        calories: 0,
+        carbs: 0,
+        protein: 0,
+        fiber: 0,
+      },
+    );
+
+    setProgress(tempProg);
+  };
+
+  useEffect(() => {
+    loadProgress();
+  }, []);
 
   return (
     <>
@@ -126,7 +167,7 @@ function Main() {
             >
               Protein
             </Text>
-            <Progress.Bar
+            <ProgressBar.Bar
               progress={progress.protein / goal.protein}
               color={theme.Progress2}
               width={100}
@@ -134,7 +175,7 @@ function Main() {
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
             >
-              {progress.protein} / {goal.protein} g
+              {progress.protein.toFixed(2)} / {goal.protein} g
             </Text>
           </View>
           <View style={styles.container}>
@@ -143,7 +184,7 @@ function Main() {
             >
               Carbs
             </Text>
-            <Progress.Bar
+            <ProgressBar.Bar
               progress={progress.carbs / goal.carbs}
               color={theme.Progress2}
               width={100}
@@ -151,7 +192,7 @@ function Main() {
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
             >
-              {progress.carbs} / {goal.carbs} g
+              {progress.carbs.toFixed(2)} / {goal.carbs} g
             </Text>
           </View>
           <View style={styles.container}>
@@ -160,7 +201,7 @@ function Main() {
             >
               Fiber
             </Text>
-            <Progress.Bar
+            <ProgressBar.Bar
               progress={progress.fiber / goal.fiber}
               color={theme.Progress2}
               width={100}
@@ -168,7 +209,7 @@ function Main() {
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
             >
-              {progress.fiber} / {goal.fiber} g
+              {progress.fiber.toFixed(2)} / {goal.fiber} g
             </Text>
           </View>
         </View>
