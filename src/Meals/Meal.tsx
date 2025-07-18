@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, ScrollView } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { MealItem } from '../Items'; // Adjust path if needed
-import { getDBConnection, getMealItems } from '../db-functions';
+import { deleteMealItem, getDBConnection, getMealItems } from '../db-functions';
 import { styles } from '../App';
 import { useTheme } from '../Themes';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 export const Meals = () => {
   const typeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
@@ -26,18 +28,38 @@ export const Meals = () => {
   }, []);
 
   return (
-    <View style={{ marginTop: 70, height: '70%' }}>
+    <View
+      style={{
+        marginTop: '7%',
+        height: '70%',
+        width: '100%',
+        paddingHorizontal: '10%',
+      }}
+    >
       <FlatList
+        scrollEnabled
         data={meals}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={{ padding: 10 }}>
-            <Text>Id: {item.id}</Text>
-            <Text>day: {item.day}</Text>
-            <Text>type: {typeOptions[item.type]}</Text>
-            <Text>foods: {item.foods}</Text>
-            <Text>servings: {item.servings}</Text>
-            <Text>calories: {item.calories}</Text>
+          <View style={{ padding: 10, flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>
+              <Text>Id: {item.id}</Text>
+              <Text>day: {item.day}</Text>
+              <Text>type: {typeOptions[item.type]}</Text>
+              <Text>foods: {item.foods}</Text>
+              <Text>servings: {item.servings}</Text>
+              <Text>calories: {item.calories}</Text>
+            </View>
+            <Pressable
+              onPress={async () => {
+                const db = await getDBConnection();
+                await deleteMealItem(db, item.id);
+                const Meals = await getMealItems(db);
+                setMeals(Meals);
+              }}
+            >
+              <FontAwesomeIcon icon={faX} />
+            </Pressable>
           </View>
         )}
         ListEmptyComponent={<Text>No Meals</Text>}

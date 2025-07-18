@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { FoodItem } from '../Items'; // Adjust path if needed
-import { getDBConnection, getFoodItems } from '../db-functions';
+import { View, Text, FlatList, Button, Pressable } from 'react-native';
+import { FoodItem } from '../Items';
+import { deleteFoodItem, getDBConnection, getFoodItems } from '../db-functions';
 import { useTheme } from '../Themes';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 export const Foods = () => {
   const [foods, setFoods] = useState<FoodItem[]>([]);
@@ -21,19 +23,68 @@ export const Foods = () => {
 
     loadMeals();
   }, []);
+
   return (
-    <View style={{ marginTop: 70, height: '70%' }}>
+    <View
+      style={{
+        marginTop: 70,
+        height: '70%',
+        width: '100%',
+        paddingHorizontal: '10%',
+      }}
+    >
       <FlatList
+        scrollEnabled
         data={foods}
         keyExtractor={item => item.id.toString()}
+        ItemSeparatorComponent={() => <View style={{ height: '5%' }} />}
         renderItem={({ item }) => (
-          <View style={{ padding: 10 }}>
-            <Text>Id: {item.id}</Text>
-            <Text>Name: {item.name}</Text>
-            <Text>Calories: {item.calories}</Text>
-            <Text>Carbs: {item.carbs}</Text>
-            <Text>Protein: {item.protein}</Text>
-            <Text>fiber: {item.fiber}</Text>
+          <View style={{ paddingHorizontal: '5%', width: '100%' }}>
+            <View style={{ flexDirection: 'row', flex: 1, width: '100%' }}>
+              <Text
+                style={{
+                  fontSize: 30,
+                  paddingVertical: '2.5%',
+                  flex: 1,
+                  color: theme.h1Color,
+                  fontWeight: 700,
+                }}
+              >
+                {item.name}
+              </Text>
+              <Pressable
+                onPress={async () => {
+                  const db = await getDBConnection();
+                  await deleteFoodItem(db, item.id);
+                  const Foods = await getFoodItems(db);
+                  setFoods(Foods);
+                }}
+                style={{ paddingVertical: '5%' }}
+              >
+                <FontAwesomeIcon icon={faX} color={theme.h1Color} size={25} />
+              </Pressable>
+            </View>
+
+            <Text
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+            >
+              Calories: {item.calories}kcal
+            </Text>
+            <Text
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+            >
+              Carbs: {item.carbs}g
+            </Text>
+            <Text
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+            >
+              Protein: {item.protein}g
+            </Text>
+            <Text
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+            >
+              Fiber: {item.fiber}g
+            </Text>
           </View>
         )}
         ListEmptyComponent={<Text>No Food</Text>}
