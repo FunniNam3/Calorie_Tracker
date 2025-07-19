@@ -3,9 +3,6 @@ import { Button, TextInput, View, Text, ScrollView } from 'react-native';
 import { styles } from '../../App';
 import { useTheme } from '../../Themes';
 import {
-  createTables,
-  deleteMealItem,
-  deleteMealTable,
   getDBConnection,
   getFoodItems,
   saveMealItem,
@@ -13,16 +10,13 @@ import {
 import { FoodItem, MealItem } from '../../Items';
 import { Picker } from '@react-native-picker/picker';
 import MultiSelect from 'react-native-multiple-select';
-import {
-  faAngleDown,
-  faLessThan,
-  faSearch,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { dropDB } from '../../Secret_Backend';
+import { useNavigation } from '@react-navigation/native';
 
 export const AddMeal = () => {
   const { theme } = useTheme();
+  const nav = useNavigation();
   const typeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   const [type, setType] = useState(0);
   const [selectedFoods, setSelectedFoods] = useState<number[]>([]);
@@ -78,6 +72,7 @@ export const AddMeal = () => {
           searchInputPlaceholderText="Search Foods..."
           displayKey="name"
           submitButtonText="Select"
+          submitButtonColor={theme.Progress2}
           noItemsText="Add food before searching"
           searchIcon={
             <FontAwesomeIcon
@@ -167,7 +162,7 @@ export const AddMeal = () => {
           const db = await getDBConnection();
 
           await saveMealItem(db, meal);
-          console.error('done');
+          nav.navigate('Main');
         }}
       />
     </View>

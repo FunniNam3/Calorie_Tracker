@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, Alert } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as ProgressBar from 'react-native-progress';
 import { Circle } from 'react-native-svg';
@@ -8,30 +8,9 @@ import { useGoal, useProgress } from '../Track';
 import { Table } from './Table';
 import { styles } from '../App';
 import { Footer } from './Foot';
-import {
-  createTables,
-  deleteMealTable,
-  getDBConnection,
-  getTodayMealItems,
-} from '../db-functions';
+import { getDBConnection, getTodayMealItems } from '../db-functions';
 import { MealItem } from '../Items';
 import { Progress } from '../Track';
-
-const showAlert = () => {
-  Alert.alert(
-    'Alert Title',
-    'This is the alert message.',
-    [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      { text: 'OK', onPress: () => console.log('OK Pressed') },
-    ],
-    { cancelable: true },
-  );
-};
 
 // This is the main home page
 

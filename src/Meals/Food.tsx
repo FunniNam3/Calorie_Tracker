@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, Pressable } from 'react-native';
+import { View, Text, FlatList, Alert, Pressable } from 'react-native';
 import { FoodItem } from '../Items';
 import { deleteFoodItem, getDBConnection, getFoodItems } from '../db-functions';
 import { useTheme } from '../Themes';
@@ -53,11 +53,28 @@ export const Foods = () => {
                 {item.name}
               </Text>
               <Pressable
-                onPress={async () => {
-                  const db = await getDBConnection();
-                  await deleteFoodItem(db, item.id);
-                  const Foods = await getFoodItems(db);
-                  setFoods(Foods);
+                onPress={() => {
+                  Alert.alert(
+                    'Are you sure?',
+                    'This cannot be undone.\n You will never see this again.',
+                    [
+                      {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'OK',
+                        onPress: async () => {
+                          const db = await getDBConnection();
+                          await deleteFoodItem(db, item.id);
+                          const Meals = await getFoodItems(db);
+                          setFoods(Meals);
+                        },
+                      },
+                    ],
+                    { cancelable: true },
+                  );
                 }}
                 style={{ paddingVertical: '5%' }}
               >
@@ -66,22 +83,22 @@ export const Foods = () => {
             </View>
 
             <Text
-              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
             >
               Calories: {item.calories}kcal
             </Text>
             <Text
-              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
             >
               Carbs: {item.carbs}g
             </Text>
             <Text
-              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
             >
               Protein: {item.protein}g
             </Text>
             <Text
-              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 400 }}
+              style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
             >
               Fiber: {item.fiber}g
             </Text>

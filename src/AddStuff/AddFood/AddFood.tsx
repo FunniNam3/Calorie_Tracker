@@ -4,6 +4,7 @@ import { styles } from '../../App';
 import { useTheme } from '../../Themes';
 import { getDBConnection, saveFoodItem } from '../../db-functions';
 import { FoodItem } from '../../Items';
+import { useNavigation } from '@react-navigation/native';
 
 export const AddFood = () => {
   const { theme } = useTheme();
@@ -12,6 +13,7 @@ export const AddFood = () => {
   const [carb, setCarb] = useState('');
   const [prot, setProt] = useState('');
   const [fib, setFib] = useState('');
+  const nav = useNavigation();
 
   return (
     <View style={[styles.container, { flex: 1, width: '100%', gap: 20 }]}>
@@ -83,7 +85,7 @@ export const AddFood = () => {
       />
       <View>
         <Button
-          title="dick"
+          title="Save Food"
           color={theme.h1Color}
           onPress={async () => {
             const db = await getDBConnection();
@@ -96,7 +98,7 @@ export const AddFood = () => {
               fiber: Number(fib),
             };
             await saveFoodItem(db, food);
-            console.error('hehe');
+            nav.navigate('Main');
           }}
         />
       </View>
