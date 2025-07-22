@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { Circle } from 'react-native-svg';
 import { useTheme } from '../Themes';
@@ -15,6 +15,10 @@ export const Table: React.FC = () => {
   const { theme } = useTheme();
   const { goal } = useGoal();
   const [mealProgress, setMealProgress] = useState([0, 0, 0]);
+  const { width } = useWindowDimensions();
+
+  const circleSize = width * 0.22;
+  const circleWidth = width * 0.03;
 
   const getMealProgress = async () => {
     const db = await getDBConnection();
@@ -47,7 +51,6 @@ export const Table: React.FC = () => {
         flexGrow: 1,
         display: 'flex',
         flexDirection: 'row',
-        gap: '7%',
         alignItems: 'flex-start',
         justifyContent: 'center',
         width: '100%',
@@ -59,11 +62,12 @@ export const Table: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          flex: 1,
         }}
       >
         <AnimatedCircularProgress
-          size={90}
-          width={10}
+          size={circleSize}
+          width={circleWidth}
           fill={(mealProgress[0] * 100) / (goal.calories * 0.35)}
           tintColor={theme.Progress1}
           backgroundColor={theme.Progress2}
@@ -93,11 +97,12 @@ export const Table: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          flex: 1,
         }}
       >
         <AnimatedCircularProgress
-          size={90}
-          width={10}
+          size={circleSize}
+          width={circleWidth}
           fill={(mealProgress[1] * 100) / (goal.calories * 0.4)}
           tintColor={theme.Progress1}
           backgroundColor={theme.Progress2}
@@ -127,11 +132,12 @@ export const Table: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          flex: 1,
         }}
       >
         <AnimatedCircularProgress
-          size={90}
-          width={10}
+          size={circleSize}
+          width={circleWidth}
           fill={(mealProgress[2] * 100) / (goal.calories * 0.25)}
           tintColor={theme.Progress1}
           backgroundColor={theme.Progress2}

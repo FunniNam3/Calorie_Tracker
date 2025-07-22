@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Alert, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Alert,
+  Pressable,
+  useWindowDimensions,
+} from 'react-native';
 import { FoodItem } from '../Items';
 import { deleteFoodItem, getDBConnection, getFoodItems } from '../db-functions';
 import { useTheme } from '../Themes';
@@ -9,6 +16,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 export const Foods = () => {
   const [foods, setFoods] = useState<FoodItem[]>([]);
   const { theme } = useTheme();
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     const loadMeals = async () => {

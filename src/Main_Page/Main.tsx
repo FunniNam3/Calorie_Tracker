@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as ProgressBar from 'react-native-progress';
 import { Circle } from 'react-native-svg';
@@ -18,6 +18,7 @@ function Main() {
   const { theme } = useTheme();
   const { goal } = useGoal();
   const { progress, setProgress } = useProgress();
+  const { width } = useWindowDimensions();
 
   const currentDate: Date = new Date();
   const formattedDate: string = currentDate.toLocaleDateString();
@@ -73,7 +74,7 @@ function Main() {
         <View style={[styles.container, { marginTop: 60 }]}>
           <Text
             style={{
-              fontSize: 60,
+              fontSize: width * 0.15,
               fontWeight: 700,
               color: theme.h1Color,
             }}
@@ -82,8 +83,8 @@ function Main() {
             {formattedDate}
           </Text>
           <AnimatedCircularProgress
-            size={300}
-            width={15}
+            size={width * 0.8}
+            width={width * 0.05}
             fill={(progress.calories / goal.calories) * 100}
             tintColor={theme.Progress1}
             backgroundColor={theme.Progress2}
@@ -95,7 +96,7 @@ function Main() {
               <Circle
                 cx={center.x}
                 cy={center.y}
-                r="14"
+                r={width * 0.04}
                 fill={theme.Progress1}
               />
             )}
@@ -104,7 +105,7 @@ function Main() {
               <>
                 <Text
                   style={{
-                    fontSize: 40,
+                    fontSize: width * 0.15,
                     color: theme.h1Color,
                     fontWeight: 500,
                   }}
@@ -113,7 +114,11 @@ function Main() {
                 </Text>
                 <Text
                   style={[
-                    { fontSize: 25, color: theme.h2Color, fontWeight: 500 },
+                    {
+                      fontSize: width * 0.1,
+                      color: theme.h2Color,
+                      fontWeight: 500,
+                    },
                   ]}
                 >
                   Left
@@ -121,7 +126,7 @@ function Main() {
                 <Text
                   style={[
                     {
-                      fontSize: 30,
+                      fontSize: width * 0.08,
                       color: theme.h2Color,
                       fontWeight: 500,
                       marginTop: -5,
@@ -135,12 +140,9 @@ function Main() {
           </AnimatedCircularProgress>
         </View>
         <View
-          style={[
-            styles.container,
-            { flexDirection: 'row', gap: 10, marginTop: -20 },
-          ]}
+          style={[styles.container, { flexDirection: 'row', marginTop: -20 }]}
         >
-          <View style={styles.container}>
+          <View style={[styles.container, { width: '33%' }]}>
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 5 }}
             >
@@ -149,7 +151,7 @@ function Main() {
             <ProgressBar.Bar
               progress={progress.protein / goal.protein}
               color={theme.Progress2}
-              width={100}
+              width={width * 0.25}
             />
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
@@ -157,7 +159,7 @@ function Main() {
               {progress.protein.toFixed(2)} / {goal.protein} g
             </Text>
           </View>
-          <View style={styles.container}>
+          <View style={[styles.container, { width: '33%' }]}>
             <Text
               style={[{ fontSize: 20, color: theme.h1Color, marginBottom: 5 }]}
             >
@@ -166,7 +168,7 @@ function Main() {
             <ProgressBar.Bar
               progress={progress.carbs / goal.carbs}
               color={theme.Progress2}
-              width={100}
+              width={width * 0.25}
             />
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
@@ -174,7 +176,7 @@ function Main() {
               {progress.carbs.toFixed(2)} / {goal.carbs} g
             </Text>
           </View>
-          <View style={styles.container}>
+          <View style={[styles.container, { width: '33%' }]}>
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 5 }}
             >
@@ -183,7 +185,7 @@ function Main() {
             <ProgressBar.Bar
               progress={progress.fiber / goal.fiber}
               color={theme.Progress2}
-              width={100}
+              width={width * 0.25}
             />
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
