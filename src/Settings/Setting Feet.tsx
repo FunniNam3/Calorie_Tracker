@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../Themes';
 import Svg, { Circle, Text } from 'react-native-svg';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faGear, faList, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faList, faHouse, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-export const AddFeet = () => {
+export const SettingFeet = () => {
   const { theme } = useTheme();
   const navigation = useNavigation();
 
@@ -16,8 +16,8 @@ export const AddFeet = () => {
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: theme.Footer,
-        width: '100%',
         height: 100,
+        width: '100%',
         alignItems: 'center',
         gap: '20%',
         paddingHorizontal: '10%',
@@ -38,7 +38,7 @@ export const AddFeet = () => {
       </Pressable>
       <Pressable
         onPress={() => {
-          navigation.navigate('Main');
+          navigation.navigate('AddMeal');
         }}
       >
         <Svg height="130" width="140" style={{ marginTop: -50 }}>
@@ -55,7 +55,7 @@ export const AddFeet = () => {
           ></Text>
         </Svg>
         <FontAwesomeIcon
-          icon={faHouse}
+          icon={faPlus}
           size={40}
           color={theme.Footer}
           style={{ position: 'absolute', alignSelf: 'center', marginTop: 10 }}
@@ -63,12 +63,12 @@ export const AddFeet = () => {
       </Pressable>
       <Pressable
         onPress={() => {
-          navigation.navigate('Settings');
+          navigation.navigate('Main');
         }}
         style={{ flex: 1 }}
       >
         <FontAwesomeIcon
-          icon={faGear}
+          icon={faHouse}
           size={40}
           color={theme.backgroundColor}
         />

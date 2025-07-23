@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Button, Pressable, Alert } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../Themes';
 import Svg, { Circle, Text } from 'react-native-svg';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faGear, faList, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faPlus, faHouse } from '@fortawesome/free-solid-svg-icons';
 
 export const ListFeet = () => {
   const { theme } = useTheme();
@@ -13,32 +13,32 @@ export const ListFeet = () => {
   return (
     <View
       style={{
+        display: 'flex',
+        flexDirection: 'row',
         backgroundColor: theme.Footer,
         height: 100,
         width: '100%',
         alignItems: 'center',
+        gap: '20%',
+        paddingHorizontal: '10%',
+        paddingBottom: '1%',
       }}
     >
       <Pressable
         onPress={() => {
-          navigation.navigate('Meals');
+          navigation.navigate('Main');
         }}
+        style={{ flex: 1 }}
       >
         <FontAwesomeIcon
-          icon={faList}
+          icon={faHouse}
           size={40}
           color={theme.backgroundColor}
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            marginLeft: '-68%',
-            marginTop: '6%',
-          }}
         />
       </Pressable>
       <Pressable
         onPress={() => {
-          navigation.navigate('Main');
+          navigation.navigate('AddMeal');
         }}
       >
         <Svg height="130" width="140" style={{ marginTop: -50 }}>
@@ -55,7 +55,7 @@ export const ListFeet = () => {
           ></Text>
         </Svg>
         <FontAwesomeIcon
-          icon={faHouse}
+          icon={faPlus}
           size={40}
           color={theme.Footer}
           style={{ position: 'absolute', alignSelf: 'center', marginTop: 10 }}
@@ -63,19 +63,14 @@ export const ListFeet = () => {
       </Pressable>
       <Pressable
         onPress={() => {
-          throw new Error('Settings');
+          navigation.navigate('Settings');
         }}
+        style={{ flex: 1 }}
       >
         <FontAwesomeIcon
           icon={faGear}
           size={40}
           color={theme.backgroundColor}
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            marginLeft: '68%',
-            marginTop: '-13%',
-          }}
         />
       </Pressable>
     </View>

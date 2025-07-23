@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type Theme = {
   backgroundColor: string;
@@ -13,7 +14,7 @@ export type Theme = {
 
 export const themes = {
   light: {
-    backgroundColor: 'light-context',
+    backgroundColor: 'white',
     h1Color: 'grey',
     h2Color: 'grey',
     Progress1: 'cyan',
@@ -65,6 +66,24 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<Theme>(themes.pink);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const value = await AsyncStorage.getItem('selectedTheme');
+        if (value === 'Pink') {
+          setTheme(themes.pink);
+        } else if (value === 'Light') {
+          setTheme(themes.light);
+        } else if (value === 'Dark') {
+          setTheme(themes.dark);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadSettings();
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button, Pressable, Alert } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../Themes';
 import Svg, { Circle, Text } from 'react-native-svg';
@@ -13,26 +13,31 @@ export const Footer = () => {
   return (
     <View
       style={{
+        display: 'flex',
+        flexDirection: 'row',
         backgroundColor: theme.Footer,
         height: 100,
         alignItems: 'center',
+        gap: '20%',
+        paddingHorizontal: '10%',
+        paddingBottom: '1%',
       }}
     >
       <Pressable
         onPress={() => {
           navigation.navigate('Meals');
         }}
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
       >
         <FontAwesomeIcon
           icon={faList}
           size={40}
           color={theme.backgroundColor}
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            marginLeft: '-68%',
-            marginTop: '6%',
-          }}
         />
       </Pressable>
       <Pressable
@@ -62,19 +67,14 @@ export const Footer = () => {
       </Pressable>
       <Pressable
         onPress={() => {
-          throw new Error('Settings');
+          navigation.navigate('Settings');
         }}
+        style={{ flex: 1 }}
       >
         <FontAwesomeIcon
           icon={faGear}
           size={40}
           color={theme.backgroundColor}
-          style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            marginLeft: '68%',
-            marginTop: '-13%',
-          }}
         />
       </Pressable>
     </View>

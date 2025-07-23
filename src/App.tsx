@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Main from './Main_Page/Main';
-import { ThemeProvider } from './Themes';
+import { ThemeProvider, themes } from './Themes';
 import { GoalProvider, ProgressProvider } from './Track';
-import { Footer } from './Main_Page/Foot';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AddStuff } from './AddStuff/AddStuff';
 import { createTables, getDBConnection } from './db-functions';
 import { List } from './Meals/List';
+import { Settings } from './Settings/Settings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from './Themes';
 
 // So I dont forget how to write an alert for later
 //////////////////////////////////////////////////////////////////////
@@ -28,14 +30,7 @@ import { List } from './Meals/List';
 //   );
 // };
 //////////////////////////////////////////////////////////////////////
-
-export type RootStackParamList = {
-  Main: {};
-  AddMeal: {};
-  Meals: {};
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator();
 
 function App() {
   useEffect(() => {
@@ -50,6 +45,7 @@ function App() {
 
     loadMeals();
   }, []);
+
   return (
     <ThemeProvider>
       <GoalProvider>
@@ -59,6 +55,7 @@ function App() {
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="AddMeal" component={AddStuff} />
               <Stack.Screen name="Meals" component={List} />
+              <Stack.Screen name="Settings" component={Settings} />
             </Stack.Navigator>
           </NavigationContainer>
         </ProgressProvider>
