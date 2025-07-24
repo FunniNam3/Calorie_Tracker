@@ -1,4 +1,5 @@
-import React, { useState, useContext, createContext } from 'react';
+import React, { useState, useContext, createContext, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type Goal = {
   calories: number;
@@ -24,7 +25,7 @@ export type ProgressContextType = {
   setProgress: React.Dispatch<React.SetStateAction<Progress>>;
 };
 
-const goals: Goal = {
+const defaultGoals: Goal = {
   calories: 2000,
   carbs: 230,
   protein: 90,
@@ -32,10 +33,10 @@ const goals: Goal = {
 };
 
 const progresses: Progress = {
-  calories: 500,
-  carbs: 150,
-  protein: 30,
-  fiber: 10,
+  calories: 0,
+  carbs: 0,
+  protein: 0,
+  fiber: 0,
 };
 
 export const goalContext = createContext<GoalContextType | undefined>(
@@ -65,7 +66,23 @@ export const useProgress = () => {
 export const GoalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [goal, setGoal] = useState<Goal>(goals);
+  const [goal, setGoal] = useState<Goal>(defaultGoals);
+
+  useEffect(() => {
+    const loadGoals = async () => {
+      try {
+        const goals = await AsyncStorage.getItem('goals');
+        if (goals) {
+          setGoal(JSON.parse(goals));
+        } else {
+          setGoal(defaultGoals);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadGoals();
+  }, []);
 
   return (
     <goalContext.Provider value={{ goal, setGoal }}>

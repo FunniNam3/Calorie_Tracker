@@ -42,7 +42,13 @@ export const AddMeal = () => {
     <View
       style={[
         styles.container,
-        { flexDirection: 'column', flex: 1, width: '100%', gap: 20 },
+        {
+          flexDirection: 'column',
+          flex: 1,
+          width: '100%',
+          gap: 20,
+          justifyContent: 'flex-start',
+        },
       ]}
     >
       <Picker

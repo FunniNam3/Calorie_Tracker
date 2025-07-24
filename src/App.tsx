@@ -9,8 +9,6 @@ import { AddStuff } from './AddStuff/AddStuff';
 import { createTables, getDBConnection } from './db-functions';
 import { List } from './Meals/List';
 import { Settings } from './Settings/Settings';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from './Themes';
 
 // So I dont forget how to write an alert for later
 //////////////////////////////////////////////////////////////////////
