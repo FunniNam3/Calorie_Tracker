@@ -15,7 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import { SettingFeet } from './Setting Feet';
 import { Goal, useGoal } from '../Track';
-import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 
 const genders = ['male', 'female'];
 
@@ -30,6 +29,16 @@ export const Settings = () => {
   const [age, setAge] = useState('0');
   const [height, setHeight] = useState('0');
   const [weight, setWeight] = useState('0');
+  const activityOptions = [
+    'Sedentary: little to no exercise',
+    'Lightly active: exercise 1-3 times/week',
+    'Moderately active: exercise 4-5 times/week',
+    'Active: daily or intense exercise 3-4 times/week',
+    'Very active: intense exercise 6-7 times/week',
+    'Extreamly active: very intense exercise daily',
+  ];
+  const activityMultiplier = [1.2, 1.375, 1.465, 1.55, 1.725, 1.9];
+  const [activity, setActivity] = useState(0);
 
   const [cal, setCal] = useState(goal.calories.toString());
   const [carb, setCarb] = useState(goal.carbs.toString());
@@ -43,10 +52,12 @@ export const Settings = () => {
         const tempAge = await AsyncStorage.getItem('Age');
         const tempHeight = await AsyncStorage.getItem('Height');
         const tempWeight = await AsyncStorage.getItem('Weight');
+        const tempActivity = await AsyncStorage.getItem('Activity');
         setGender(tempGender == 'male');
         setAge(tempAge);
         setHeight(tempHeight);
         setWeight(tempWeight);
+        setActivity(Number(tempActivity));
       } catch (error) {
         setGender(false);
         setAge('0');
@@ -213,7 +224,7 @@ export const Settings = () => {
                     style={{
                       flexDirection: 'row',
                       backgroundColor: theme.h2Color,
-                      borderRadius: width * 0.02,
+                      borderRadius: screenWidth * 0.02,
                       gap: 5,
                     }}
                   >
@@ -225,8 +236,8 @@ export const Settings = () => {
                         backgroundColor: !gender
                           ? theme.h2Color
                           : theme.h1Color,
-                        padding: width * 0.02,
-                        borderRadius: width * 0.02,
+                        padding: screenWidth * 0.02,
+                        borderRadius: screenWidth * 0.02,
                       }}
                     >
                       Male
@@ -236,8 +247,8 @@ export const Settings = () => {
                         color: theme.backgroundColor,
                         fontSize: screenWidth * 0.04,
                         fontWeight: 500,
-                        padding: width * 0.02,
-                        borderRadius: width * 0.02,
+                        padding: screenWidth * 0.02,
+                        borderRadius: screenWidth * 0.02,
                         backgroundColor: gender ? theme.h2Color : theme.h1Color,
                       }}
                     >
@@ -269,8 +280,8 @@ export const Settings = () => {
                     color: theme.backgroundColor,
                     minWidth: '50%',
                     textAlign: 'right',
-                    padding: width * 0.02,
-                    borderRadius: width * 0.02,
+                    padding: screenWidth * 0.02,
+                    borderRadius: screenWidth * 0.02,
                   }}
                   keyboardType="decimal-pad"
                 />
@@ -298,8 +309,8 @@ export const Settings = () => {
                     color: theme.backgroundColor,
                     minWidth: '50%',
                     textAlign: 'right',
-                    padding: width * 0.02,
-                    borderRadius: width * 0.02,
+                    padding: screenWidth * 0.02,
+                    borderRadius: screenWidth * 0.02,
                   }}
                   keyboardType="decimal-pad"
                 />
@@ -327,20 +338,56 @@ export const Settings = () => {
                     color: theme.backgroundColor,
                     minWidth: '50%',
                     textAlign: 'right',
-                    padding: width * 0.02,
-                    borderRadius: width * 0.02,
+                    padding: screenWidth * 0.02,
+                    borderRadius: screenWidth * 0.02,
                   }}
                   keyboardType="decimal-pad"
                 />
               </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text
+                  style={{
+                    color: theme.h1Color,
+                    fontSize: screenWidth * 0.06,
+                    fontWeight: 500,
+                    flex: 1,
+                  }}
+                >
+                  Activity Level
+                </Text>
+                <View
+                  style={{
+                    minWidth: '50%',
+                    borderRadius: screenWidth * 0.02,
+                    backgroundColor: theme.Progress2,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Picker
+                    selectedValue={activity}
+                    onValueChange={(itemValue, itemIndex) => {
+                      setActivity(itemValue);
+                    }}
+                    prompt="What are you adding:"
+                    style={{ color: theme.backgroundColor }}
+                  >
+                    {activityOptions.map((label, index) => (
+                      <Picker.Item label={label} value={index} key={index} />
+                    ))}
+                  </Picker>
+                </View>
+              </View>
               {advancedMode && (
                 <>
-                  <View>
+                  <View
+                    style={{ flexDirection: 'row', justifyContent: 'center' }}
+                  >
                     <Text
                       style={{
                         color: theme.h1Color,
-                        fontSize: screenWidth * 0.04,
+                        fontSize: screenWidth * 0.06,
                         fontWeight: 500,
+                        flex: 1,
                       }}
                     >
                       Calories
@@ -355,16 +402,23 @@ export const Settings = () => {
                       style={{
                         backgroundColor: theme.Progress2,
                         color: theme.backgroundColor,
+                        minWidth: '50%',
+                        textAlign: 'right',
+                        padding: screenWidth * 0.02,
+                        borderRadius: screenWidth * 0.02,
                       }}
                       keyboardType="decimal-pad"
                     />
                   </View>
-                  <View>
+                  <View
+                    style={{ flexDirection: 'row', justifyContent: 'center' }}
+                  >
                     <Text
                       style={{
                         color: theme.h1Color,
-                        fontSize: screenWidth * 0.04,
+                        fontSize: screenWidth * 0.06,
                         fontWeight: 500,
+                        flex: 1,
                       }}
                     >
                       Carbs
@@ -379,16 +433,23 @@ export const Settings = () => {
                       style={{
                         backgroundColor: theme.Progress2,
                         color: theme.backgroundColor,
+                        minWidth: '50%',
+                        textAlign: 'right',
+                        padding: screenWidth * 0.02,
+                        borderRadius: screenWidth * 0.02,
                       }}
                       keyboardType="decimal-pad"
                     />
                   </View>
-                  <View>
+                  <View
+                    style={{ flexDirection: 'row', justifyContent: 'center' }}
+                  >
                     <Text
                       style={{
                         color: theme.h1Color,
-                        fontSize: screenWidth * 0.04,
+                        fontSize: screenWidth * 0.06,
                         fontWeight: 500,
+                        flex: 1,
                       }}
                     >
                       Protein
@@ -403,16 +464,23 @@ export const Settings = () => {
                       style={{
                         backgroundColor: theme.Progress2,
                         color: theme.backgroundColor,
+                        minWidth: '50%',
+                        textAlign: 'right',
+                        padding: screenWidth * 0.02,
+                        borderRadius: screenWidth * 0.02,
                       }}
                       keyboardType="decimal-pad"
                     />
                   </View>
-                  <View>
+                  <View
+                    style={{ flexDirection: 'row', justifyContent: 'center' }}
+                  >
                     <Text
                       style={{
                         color: theme.h1Color,
-                        fontSize: screenWidth * 0.04,
+                        fontSize: screenWidth * 0.06,
                         fontWeight: 500,
+                        flex: 1,
                       }}
                     >
                       Fiber
@@ -427,17 +495,14 @@ export const Settings = () => {
                       style={{
                         backgroundColor: theme.Progress2,
                         color: theme.backgroundColor,
+                        minWidth: '50%',
+                        textAlign: 'right',
+                        padding: screenWidth * 0.02,
+                        borderRadius: screenWidth * 0.02,
                       }}
                       keyboardType="decimal-pad"
                     />
                   </View>
-                  <View
-                    style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginTop: '5%',
-                    }}
-                  ></View>
                 </>
               )}
             </View>
@@ -457,6 +522,7 @@ export const Settings = () => {
                   ['Age', age],
                   ['Height', height],
                   ['Weight', weight],
+                  ['Activity', activity.toString()],
                 ]);
                 if (advancedMode) {
                   let temp: Goal = {
@@ -469,11 +535,15 @@ export const Settings = () => {
                   setGoal(temp);
                 } else {
                   let temp: Goal = {
-                    calories:
-                      10 * Number(weight) +
-                      6.25 * Number(height) -
-                      5 * Number(age) +
-                      (gender ? 5 : -161),
+                    calories: Number(
+                      (
+                        (10 * Number(weight) +
+                          6.25 * Number(height) -
+                          5 * Number(age) +
+                          (gender ? 5 : -161)) *
+                        activityMultiplier[activity]
+                      ).toFixed(0),
+                    ),
                     carbs: Number(carb),
                     protein: Number(prot),
                     fiber: Number(fib),
