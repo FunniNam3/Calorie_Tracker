@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,57 +12,61 @@ import {
 import { styles } from '../App';
 import { useTheme, themes } from '../Themes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Picker } from '@react-native-picker/picker';
 import { SettingFeet } from './Setting Feet';
-import { Goal, useGoal } from '../Track';
-
-const genders = ['male', 'female'];
+import { useGoal } from '../Track';
+import { ManualSettings } from './Modes/Manual';
+import { BasicSettings } from './Modes/Basic';
 
 export const Settings = () => {
   const { theme, setTheme } = useTheme();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const [advancedMode, setAdvancedMode] = useState(false);
-  const { goal, setGoal } = useGoal();
 
   // Male = true, Female = false
   const [gender, setGender] = useState(false);
   const [age, setAge] = useState('0');
   const [height, setHeight] = useState('0');
   const [weight, setWeight] = useState('0');
-  const activityOptions = [
-    'Sedentary: little to no exercise',
-    'Lightly active: exercise 1-3 times/week',
-    'Moderately active: exercise 4-5 times/week',
-    'Active: daily or intense exercise 3-4 times/week',
-    'Very active: intense exercise 6-7 times/week',
-    'Extreamly active: very intense exercise daily',
-  ];
-  const activityMultiplier = [1.2, 1.375, 1.465, 1.55, 1.725, 1.9];
   const [activity, setActivity] = useState(0);
-
-  const [cal, setCal] = useState(goal.calories.toString());
-  const [carb, setCarb] = useState(goal.carbs.toString());
-  const [prot, setProt] = useState(goal.protein.toString());
-  const [fib, setFib] = useState(goal.fiber.toString());
+  const [objective, setObjective] = useState(0);
 
   useEffect(() => {
     const getStats = async () => {
       try {
         const tempGender = await AsyncStorage.getItem('Gender');
-        const tempAge = await AsyncStorage.getItem('Age');
-        const tempHeight = await AsyncStorage.getItem('Height');
-        const tempWeight = await AsyncStorage.getItem('Weight');
-        const tempActivity = await AsyncStorage.getItem('Activity');
         setGender(tempGender == 'male');
-        setAge(tempAge);
-        setHeight(tempHeight);
-        setWeight(tempWeight);
-        setActivity(Number(tempActivity));
       } catch (error) {
         setGender(false);
+      }
+      try {
+        const tempAge = await AsyncStorage.getItem('Age');
+        setAge(String(tempAge));
+      } catch (error) {
         setAge('0');
+      }
+      try {
+        const tempHeight = await AsyncStorage.getItem('Height');
+        setHeight(String(tempHeight));
+      } catch (error) {
         setHeight('0');
+      }
+      try {
+        const tempWeight = await AsyncStorage.getItem('Weight');
+        setWeight(String(tempWeight));
+      } catch (error) {
         setWeight('0');
+      }
+      try {
+        const tempActivity = await AsyncStorage.getItem('Activity');
+        setActivity(Number(tempActivity));
+      } catch (error) {
+        setActivity(0);
+      }
+      try {
+        const tempObjective = await AsyncStorage.getItem('Objective');
+        setObjective(Number(tempObjective));
+      } catch (error) {
+        setObjective(0);
       }
     };
     getStats();
@@ -295,7 +299,7 @@ export const Settings = () => {
                     flex: 1,
                   }}
                 >
-                  Height (cm)
+                  Height (in)
                 </Text>
                 <TextInput
                   placeholder="Height"
@@ -324,7 +328,7 @@ export const Settings = () => {
                     flex: 1,
                   }}
                 >
-                  Weight (kg)
+                  Weight (lbs)
                 </Text>
                 <TextInput
                   placeholder="Weight"
@@ -344,224 +348,28 @@ export const Settings = () => {
                   keyboardType="decimal-pad"
                 />
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text
-                  style={{
-                    color: theme.h1Color,
-                    fontSize: screenWidth * 0.06,
-                    fontWeight: 500,
-                    flex: 1,
-                  }}
-                >
-                  Activity Level
-                </Text>
-                <View
-                  style={{
-                    minWidth: '50%',
-                    borderRadius: screenWidth * 0.02,
-                    backgroundColor: theme.Progress2,
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Picker
-                    selectedValue={activity}
-                    onValueChange={(itemValue, itemIndex) => {
-                      setActivity(itemValue);
-                    }}
-                    prompt="What are you adding:"
-                    style={{ color: theme.backgroundColor }}
-                  >
-                    {activityOptions.map((label, index) => (
-                      <Picker.Item label={label} value={index} key={index} />
-                    ))}
-                  </Picker>
-                </View>
-              </View>
+              {!advancedMode && (
+                <BasicSettings
+                  gender={gender}
+                  age={age}
+                  height={height}
+                  weight={weight}
+                  objective={objective}
+                  setObjective={setObjective}
+                  activity={activity}
+                  setActivity={setActivity}
+                />
+              )}
               {advancedMode && (
-                <>
-                  <View
-                    style={{ flexDirection: 'row', justifyContent: 'center' }}
-                  >
-                    <Text
-                      style={{
-                        color: theme.h1Color,
-                        fontSize: screenWidth * 0.06,
-                        fontWeight: 500,
-                        flex: 1,
-                      }}
-                    >
-                      Calories
-                    </Text>
-                    <TextInput
-                      placeholder="Calories"
-                      value={cal}
-                      onChangeText={text => {
-                        const numText = text.replace(/[^0-9.]+/g, '');
-                        setCal(numText);
-                      }}
-                      style={{
-                        backgroundColor: theme.Progress2,
-                        color: theme.backgroundColor,
-                        minWidth: '50%',
-                        textAlign: 'right',
-                        padding: screenWidth * 0.02,
-                        borderRadius: screenWidth * 0.02,
-                      }}
-                      keyboardType="decimal-pad"
-                    />
-                  </View>
-                  <View
-                    style={{ flexDirection: 'row', justifyContent: 'center' }}
-                  >
-                    <Text
-                      style={{
-                        color: theme.h1Color,
-                        fontSize: screenWidth * 0.06,
-                        fontWeight: 500,
-                        flex: 1,
-                      }}
-                    >
-                      Carbs
-                    </Text>
-                    <TextInput
-                      placeholder="Carbs"
-                      value={carb}
-                      onChangeText={text => {
-                        const numText = text.replace(/[^0-9.]+/g, '');
-                        setCarb(numText);
-                      }}
-                      style={{
-                        backgroundColor: theme.Progress2,
-                        color: theme.backgroundColor,
-                        minWidth: '50%',
-                        textAlign: 'right',
-                        padding: screenWidth * 0.02,
-                        borderRadius: screenWidth * 0.02,
-                      }}
-                      keyboardType="decimal-pad"
-                    />
-                  </View>
-                  <View
-                    style={{ flexDirection: 'row', justifyContent: 'center' }}
-                  >
-                    <Text
-                      style={{
-                        color: theme.h1Color,
-                        fontSize: screenWidth * 0.06,
-                        fontWeight: 500,
-                        flex: 1,
-                      }}
-                    >
-                      Protein
-                    </Text>
-                    <TextInput
-                      placeholder="Protein"
-                      value={prot}
-                      onChangeText={text => {
-                        const numText = text.replace(/[^0-9.]+/g, '');
-                        setProt(numText);
-                      }}
-                      style={{
-                        backgroundColor: theme.Progress2,
-                        color: theme.backgroundColor,
-                        minWidth: '50%',
-                        textAlign: 'right',
-                        padding: screenWidth * 0.02,
-                        borderRadius: screenWidth * 0.02,
-                      }}
-                      keyboardType="decimal-pad"
-                    />
-                  </View>
-                  <View
-                    style={{ flexDirection: 'row', justifyContent: 'center' }}
-                  >
-                    <Text
-                      style={{
-                        color: theme.h1Color,
-                        fontSize: screenWidth * 0.06,
-                        fontWeight: 500,
-                        flex: 1,
-                      }}
-                    >
-                      Fiber
-                    </Text>
-                    <TextInput
-                      placeholder="Fiber"
-                      value={fib}
-                      onChangeText={text => {
-                        const numText = text.replace(/[^0-9.]+/g, '');
-                        setFib(numText);
-                      }}
-                      style={{
-                        backgroundColor: theme.Progress2,
-                        color: theme.backgroundColor,
-                        minWidth: '50%',
-                        textAlign: 'right',
-                        padding: screenWidth * 0.02,
-                        borderRadius: screenWidth * 0.02,
-                      }}
-                      keyboardType="decimal-pad"
-                    />
-                  </View>
-                </>
+                <ManualSettings
+                  gender={gender}
+                  age={age}
+                  height={height}
+                  weight={weight}
+                  activity={activity}
+                />
               )}
             </View>
-            <Pressable
-              style={{
-                backgroundColor: theme.h1Color,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '40%',
-                marginBottom: screenHeight * 0.1,
-                paddingVertical: screenHeight * 0.01,
-                borderRadius: 20,
-              }}
-              onPress={async () => {
-                await AsyncStorage.multiSet([
-                  ['Gender', gender ? 'male' : 'female'],
-                  ['Age', age],
-                  ['Height', height],
-                  ['Weight', weight],
-                  ['Activity', activity.toString()],
-                ]);
-                if (advancedMode) {
-                  let temp: Goal = {
-                    calories: Number(cal),
-                    carbs: Number(carb),
-                    protein: Number(prot),
-                    fiber: Number(fib),
-                  };
-                  await AsyncStorage.setItem('goals', JSON.stringify(temp));
-                  setGoal(temp);
-                } else {
-                  let temp: Goal = {
-                    calories: Number(
-                      (
-                        (10 * Number(weight) +
-                          6.25 * Number(height) -
-                          5 * Number(age) +
-                          (gender ? 5 : -161)) *
-                        activityMultiplier[activity]
-                      ).toFixed(0),
-                    ),
-                    carbs: Number(carb),
-                    protein: Number(prot),
-                    fiber: Number(fib),
-                  };
-                  await AsyncStorage.setItem('goals', JSON.stringify(temp));
-                  setGoal(temp);
-                }
-              }}
-            >
-              <Text
-                style={{
-                  color: theme.backgroundColor,
-                  fontSize: screenWidth * 0.05,
-                }}
-              >
-                Save
-              </Text>
-            </Pressable>
           </View>
         </ScrollView>
       </View>
