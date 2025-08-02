@@ -6,7 +6,13 @@ import { GoalProvider, ProgressProvider } from './Track';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AddStuff } from './AddStuff/AddStuff';
-import { createTables, getDBConnection } from './db-functions';
+import {
+  createTables,
+  deleteFoodItem,
+  deleteFoodTable,
+  deleteMealTable,
+  getDBConnection,
+} from './db-functions';
 import { List } from './Meals/List';
 import { Settings } from './Settings/Settings';
 

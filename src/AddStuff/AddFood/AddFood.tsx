@@ -12,7 +12,7 @@ export const AddFood = () => {
   const [cal, setCal] = useState('');
   const [carb, setCarb] = useState('');
   const [prot, setProt] = useState('');
-  const [fib, setFib] = useState('');
+  const [fat, setFat] = useState('');
   const nav = useNavigation();
 
   return (
@@ -70,11 +70,11 @@ export const AddFood = () => {
         keyboardType="decimal-pad"
       />
       <TextInput
-        placeholder="Fiber"
-        value={fib}
+        placeholder="Fat"
+        value={fat}
         onChangeText={text => {
           const numText = text.replace(/[^0-9.]+/g, '');
-          setFib(numText);
+          setFat(numText);
         }}
         style={{
           backgroundColor: theme.Progress2,
@@ -95,7 +95,7 @@ export const AddFood = () => {
               calories: Number(cal),
               carbs: Number(carb),
               protein: Number(prot),
-              fiber: Number(fib),
+              fat: Number(fat),
             };
             await saveFoodItem(db, food);
             nav.navigate('Main');

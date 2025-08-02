@@ -5,7 +5,7 @@ export type Goal = {
   calories: number;
   carbs: number;
   protein: number;
-  fiber: number;
+  fat: number;
 };
 
 export type GoalContextType = {
@@ -17,7 +17,7 @@ export type Progress = {
   calories: number;
   carbs: number;
   protein: number;
-  fiber: number;
+  fat: number;
 };
 
 export type ProgressContextType = {
@@ -29,14 +29,14 @@ const defaultGoals: Goal = {
   calories: 2000,
   carbs: 230,
   protein: 90,
-  fiber: 25,
+  fat: 25,
 };
 
 const progresses: Progress = {
   calories: 0,
   carbs: 0,
   protein: 0,
-  fiber: 0,
+  fat: 0,
 };
 
 export const goalContext = createContext<GoalContextType | undefined>(

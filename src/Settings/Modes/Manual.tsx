@@ -32,7 +32,7 @@ export const ManualSettings: React.FC<props> = ({
   const [cal, setCal] = useState(goal.calories.toString());
   const [carb, setCarb] = useState(goal.carbs.toString());
   const [prot, setProt] = useState(goal.protein.toString());
-  const [fib, setFib] = useState(goal.fiber.toString());
+  const [fat, setFat] = useState(goal.fat.toString());
 
   return (
     <>
@@ -149,14 +149,14 @@ export const ManualSettings: React.FC<props> = ({
                 flex: 1,
               }}
             >
-              Fiber (g)
+              Fat (g)
             </Text>
             <TextInput
-              placeholder="Fiber"
-              value={fib}
+              placeholder="Fat"
+              value={fat}
               onChangeText={text => {
                 const numText = text.replace(/[^0-9.]+/g, '');
-                setFib(numText);
+                setFat(numText);
               }}
               style={{
                 backgroundColor: theme.Progress2,
@@ -194,7 +194,7 @@ export const ManualSettings: React.FC<props> = ({
               calories: Number(cal),
               carbs: Number(carb),
               protein: Number(prot),
-              fiber: Number(fib),
+              fat: Number(fat),
             };
             await AsyncStorage.setItem('goals', JSON.stringify(temp));
             setGoal(temp);

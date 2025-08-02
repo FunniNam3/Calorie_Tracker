@@ -93,7 +93,7 @@ export const Foods = () => {
             <Text
               style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
             >
-              Calories: {item.calories}kcal
+              Calories: {item.calories} Cal
             </Text>
             <Text
               style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
@@ -108,7 +108,7 @@ export const Foods = () => {
             <Text
               style={{ color: theme.h2Color, fontSize: 20, fontWeight: 500 }}
             >
-              Fiber: {item.fiber}g
+              Fiber: {item.fat}g
             </Text>
           </View>
         )}

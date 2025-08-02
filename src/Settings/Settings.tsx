@@ -305,7 +305,7 @@ export const Settings = () => {
                   placeholder="Height"
                   value={height}
                   onChangeText={text => {
-                    const numText = text.replace(/[^0-9]+/g, '');
+                    const numText = text.replace(/[^0-9.]+/g, '');
                     setHeight(numText);
                   }}
                   style={{
@@ -334,7 +334,7 @@ export const Settings = () => {
                   placeholder="Weight"
                   value={weight}
                   onChangeText={text => {
-                    const numText = text.replace(/[^0-9]+/g, '');
+                    const numText = text.replace(/[^0-9.]+/g, '');
                     setWeight(numText);
                   }}
                   style={{

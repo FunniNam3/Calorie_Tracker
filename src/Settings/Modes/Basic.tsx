@@ -52,9 +52,9 @@ export const BasicSettings: React.FC<props> = ({
   ];
   const objectiveAdder = [0, -250, -500, -1000, 250, 500, 1000];
 
-  const [carb, setCarb] = useState(goal.carbs.toString());
-  const [prot, setProt] = useState(goal.protein.toString());
-  const [fib, setFib] = useState(goal.fiber.toString());
+  const [carb, setCarb] = useState(goal.carbs?.toString());
+  const [prot, setProt] = useState(goal.protein?.toString());
+  const [fat, setFat] = useState(goal.fat?.toString());
 
   return (
     <>
@@ -156,9 +156,9 @@ export const BasicSettings: React.FC<props> = ({
                   objectiveAdder[objective]
                 ).toFixed(0),
               ),
-              carbs: Number(carb),
-              protein: Number(prot),
-              fiber: Number(fib),
+              carbs: Number(carb) ? Number(carb) : 0,
+              protein: Number(prot) ? Number(prot) : 0,
+              fat: Number(fat) ? Number(fat) : 0,
             };
             await AsyncStorage.setItem('goals', JSON.stringify(temp));
             setGoal(temp);

@@ -34,7 +34,7 @@ function Main() {
         acc.calories += curr.calories;
         acc.carbs += curr.carbs;
         acc.protein += curr.protein;
-        acc.fiber += curr.fiber;
+        acc.fat += curr.fat;
         return acc;
       },
       {
@@ -46,7 +46,7 @@ function Main() {
         calories: 0,
         carbs: 0,
         protein: 0,
-        fiber: 0,
+        fat: 0,
       },
     );
 
@@ -110,7 +110,7 @@ function Main() {
                     fontWeight: 500,
                   }}
                 >
-                  {progress.calories} kcal
+                  {progress.calories} Cal
                 </Text>
                 <Text
                   style={[
@@ -133,7 +133,7 @@ function Main() {
                     },
                   ]}
                 >
-                  {goal.calories - progress.calories} kcal
+                  {goal.calories - progress.calories} Cal
                 </Text>
               </>
             )}
@@ -180,17 +180,17 @@ function Main() {
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 5 }}
             >
-              Fiber
+              Fat
             </Text>
             <ProgressBar.Bar
-              progress={progress.fiber / goal.fiber}
+              progress={progress.fat / goal.fat}
               color={theme.Progress2}
               width={width * 0.25}
             />
             <Text
               style={{ fontSize: 20, color: theme.h1Color, marginBottom: 4 }}
             >
-              {progress.fiber.toFixed(2)} / {goal.fiber} g
+              {progress.fat.toFixed(2)} / {goal.fat} g
             </Text>
           </View>
         </View>

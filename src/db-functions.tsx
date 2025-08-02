@@ -26,7 +26,7 @@ export const createTables = async (db: SQLiteDatabase) => {
       calories REAL NOT NULL,
       carbs REAL NOT NULL,
       protein REAL NOT NULL,
-      fiber REAL NOT NULL
+      fat REAL NOT NULL
     );`;
 
   await db.executeSql(mealQuery);
@@ -37,7 +37,7 @@ export const createTables = async (db: SQLiteDatabase) => {
       calories FLOAT,
       carbs FLOAT,
       protein FLOAT,
-      fiber FLOAT
+      fat FLOAT
     );`;
 
   await db.executeSql(foodQuery);
@@ -174,7 +174,7 @@ export const saveFoodItems = async (
     foodItems
       .map(
         i =>
-          `(${i.id}, '${i.name}', '${i.calories}', '${i.carbs}', '${i.protein}', '${i.fiber}')`,
+          `(${i.id}, '${i.name}', '${i.calories}', '${i.carbs}', '${i.protein}', '${i.fat}')`,
       )
       .join(',');
 
@@ -193,7 +193,7 @@ export const saveFoodItem = async (db: SQLiteDatabase, foodItem: FoodItem) => {
     foodItem.calories,
     foodItem.carbs,
     foodItem.protein,
-    foodItem.fiber,
+    foodItem.fat,
   ];
 
   return db.executeSql(insertQuery, params);
@@ -208,7 +208,7 @@ export const saveMealItems = async (
     mealItems
       .map(
         i =>
-          `(${i.day}, '${i.type}', '${i.foods}', '${i.servings}', '${i.calories}', '${i.carbs}', '${i.protein}', '${i.fiber}')`,
+          `(${i.day}, '${i.type}', '${i.foods}', '${i.servings}', '${i.calories}', '${i.carbs}', '${i.protein}', '${i.fat}')`,
       )
       .join(',');
 
@@ -230,7 +230,7 @@ export const saveMealItem = async (db: SQLiteDatabase, mealItem: MealItem) => {
     mealItem.calories,
     mealItem.carbs,
     mealItem.protein,
-    mealItem.fiber,
+    mealItem.fat,
   ];
   return db.executeSql(insertQuery, params);
 };

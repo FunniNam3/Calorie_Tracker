@@ -4,7 +4,7 @@ export type FoodItem = {
   calories: number;
   carbs: number;
   protein: number;
-  fiber: number;
+  fat: number;
 };
 
 export type MealItem = {
@@ -16,5 +16,5 @@ export type MealItem = {
   calories: number;
   carbs: number;
   protein: number;
-  fiber: number;
+  fat: number;
 };

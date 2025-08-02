@@ -160,9 +160,9 @@ export const AddMeal = () => {
               const serving = servings[f.id] || 0;
               return total + f.protein * serving;
             }, 0),
-            fiber: selectedFoodObjects.reduce((total, f) => {
+            fat: selectedFoodObjects.reduce((total, f) => {
               const serving = servings[f.id] || 0;
-              return total + f.fiber * serving;
+              return total + f.fat * serving;
             }, 0),
           };
           const db = await getDBConnection();
