@@ -20,7 +20,7 @@ import { BasicSettings } from './Modes/Basic';
 export const Settings = () => {
   const { theme, setTheme } = useTheme();
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
-  const [advancedMode, setAdvancedMode] = useState(false);
+  const [manualMode, setManualMode] = useState(false);
 
   // Male = true, Female = false
   const [gender, setGender] = useState(false);
@@ -75,7 +75,7 @@ export const Settings = () => {
   useEffect(() => {
     const getMode = async () => {
       const mode = await AsyncStorage.getItem('mode');
-      setAdvancedMode(mode === '1');
+      setManualMode(mode === '1');
     };
     getMode();
   }, []);
@@ -128,42 +128,36 @@ export const Settings = () => {
             >
               Themes
             </Text>
-            <Button
-              title={'Pink'}
-              onPress={async () => {
-                setTheme(themes.pink);
-                try {
-                  await AsyncStorage.setItem('selectedTheme', 'Pink');
-                } catch (error) {
-                  console.error('no Save');
-                }
-              }}
-              color={themes.pink.backgroundColor}
-            />
-            <Button
-              title={'Light'}
-              onPress={async () => {
-                setTheme(themes.light);
-                try {
-                  await AsyncStorage.setItem('selectedTheme', 'Light');
-                } catch (error) {
-                  console.error('no Save');
-                }
-              }}
-              color={themes.light.backgroundColor}
-            />
-            <Button
-              title={'Dark'}
-              onPress={async () => {
-                setTheme(themes.dark);
-                try {
-                  await AsyncStorage.setItem('selectedTheme', 'Dark');
-                } catch (error) {
-                  console.error('no Save');
-                }
-              }}
-              color={themes.dark.backgroundColor}
-            />
+            {themes.map((theme, index) => (
+              <Pressable
+                style={{
+                  backgroundColor: theme.backgroundColor,
+                  padding: 10,
+                  alignItems: 'center',
+                  borderColor: theme.h1Color,
+                  borderWidth: 5,
+                  borderRadius: 25,
+                }}
+                onPress={async () => {
+                  setTheme(theme);
+                  try {
+                    await AsyncStorage.setItem('selectedTheme', theme.name);
+                  } catch (error) {
+                    console.error('no Save');
+                  }
+                }}
+              >
+                <Text
+                  style={{
+                    color: theme.h1Color,
+                    fontSize: screenHeight * 0.02,
+                    fontWeight: 800,
+                  }}
+                >
+                  {theme.name}
+                </Text>
+              </Pressable>
+            ))}
           </View>
           <View
             style={{
@@ -189,14 +183,14 @@ export const Settings = () => {
                   color: theme.h1Color,
                 }}
               >
-                Advanced Mode
+                Manual Mode
               </Text>
               <Switch
                 onValueChange={async () => {
-                  setAdvancedMode(previousState => !previousState);
-                  await AsyncStorage.setItem('mode', advancedMode ? '0' : '1');
+                  setManualMode(previousState => !previousState);
+                  await AsyncStorage.setItem('mode', manualMode ? '0' : '1');
                 }}
-                value={advancedMode}
+                value={manualMode}
               />
             </View>
             <View
@@ -348,7 +342,7 @@ export const Settings = () => {
                   keyboardType="decimal-pad"
                 />
               </View>
-              {!advancedMode && (
+              {!manualMode && (
                 <BasicSettings
                   gender={gender}
                   age={age}
@@ -360,7 +354,7 @@ export const Settings = () => {
                   setActivity={setActivity}
                 />
               )}
-              {advancedMode && (
+              {manualMode && (
                 <ManualSettings
                   gender={gender}
                   age={age}

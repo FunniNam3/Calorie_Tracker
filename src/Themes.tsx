@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type Theme = {
+  name: string;
   backgroundColor: string;
   h1Color: string;
   h2Color: string;
@@ -12,28 +13,40 @@ export type Theme = {
   Select2: string;
 };
 
-export const themes = {
-  light: {
-    backgroundColor: 'white',
-    h1Color: 'grey',
-    h2Color: 'grey',
-    Progress1: 'cyan',
-    Progress2: 'blue',
-    Footer: 'blue',
+//  backgroundColor: Neutral100,
+//  h1Color: Neutral700,
+//  h2Color: Neutral400,
+//  Progress1: Neutral700,
+//  Progress2: Neutral500,
+//  Footer: Neutral500,
+//  Select1: 'black',
+//  Select2: 'grey',
+
+export const themes = [
+  {
+    name: 'Light',
+    backgroundColor: '#F7F8F9',
+    h1Color: '#626F86',
+    h2Color: '#B3B9C4',
+    Progress1: '#626F86',
+    Progress2: '#8590A2',
+    Footer: '#8590A2',
     Select1: 'black',
     Select2: 'grey',
   },
-  dark: {
-    backgroundColor: 'black',
-    h1Color: 'white',
-    h2Color: 'white',
-    Progress1: 'cyan',
-    Progress2: 'blue',
-    Footer: 'blue',
+  {
+    name: 'Dark',
+    backgroundColor: '#1D2125',
+    h1Color: '#8C9BAB',
+    h2Color: '#454F59',
+    Progress1: '#8C9BAB',
+    Progress2: '#596773',
+    Footer: '#596773',
     Select1: 'black',
     Select2: 'grey',
   },
-  pink: {
+  {
+    name: 'Pink',
     backgroundColor: '#FFE9EF',
     h1Color: '#FF9CB5',
     h2Color: '#FFBCCD',
@@ -43,7 +56,7 @@ export const themes = {
     Select1: '#FFE9EF',
     Select2: 'grey',
   },
-};
+];
 
 type ThemeContextType = {
   theme: Theme;
@@ -65,18 +78,18 @@ export const useTheme = () => {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setTheme] = useState<Theme>(themes.pink);
+  const [theme, setTheme] = useState<Theme>(themes[2]);
 
   useEffect(() => {
     const loadSettings = async () => {
       try {
         const value = await AsyncStorage.getItem('selectedTheme');
         if (value === 'Pink') {
-          setTheme(themes.pink);
+          setTheme(themes[2]);
         } else if (value === 'Light') {
-          setTheme(themes.light);
+          setTheme(themes[0]);
         } else if (value === 'Dark') {
-          setTheme(themes.dark);
+          setTheme(themes[1]);
         }
       } catch (error) {
         console.error(error);
