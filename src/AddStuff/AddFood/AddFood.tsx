@@ -97,7 +97,7 @@ export const AddFood = () => {
               protein: Number(prot),
               fat: Number(fat),
             };
-            await saveFoodItem(db, food);
+            let result = await saveFoodItem(db, food);
             nav.navigate('Main');
           }}
         />

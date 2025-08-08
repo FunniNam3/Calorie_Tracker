@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import { styles } from '../App';
 import { useTheme } from '../Themes';
 import { Picker } from '@react-native-picker/picker';
@@ -8,9 +8,10 @@ import { Meals } from './Meal';
 import { Foods } from './Food';
 
 export const List = () => {
-  const mealOptions = ['Meal', 'Food'];
+  const mealOptions = ['Meals', 'Foods'];
   const { theme } = useTheme();
   const [type, setType] = useState();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   return (
     <View
@@ -40,25 +41,43 @@ export const List = () => {
             paddingHorizontal: 40,
           }}
         >
-          What to add:
+          Item Search
         </Text>
-        <View style={[styles.container, { flex: 1, width: '100%' }]}>
+        <View
+          style={[
+            styles.container,
+            {
+              width: '80%',
+              borderRadius: screenWidth * 0.02,
+              backgroundColor: theme.h1Color,
+              marginHorizontal: '10%',
+              overflow: 'hidden',
+            },
+          ]}
+        >
           <Picker
             selectedValue={type}
             onValueChange={(itemValue, itemIndex) => {
               setType(itemValue);
             }}
-            prompt="What are you adding:"
+            prompt="What do you want to look at:"
             style={{
-              height: 50,
               width: '100%',
+              backgroundColor: theme.h1Color,
               color: theme.backgroundColor,
-              backgroundColor: theme.Progress2,
-              maxWidth: '80%',
+              textAlign: 'left',
             }}
           >
             {mealOptions.map((label, index) => (
-              <Picker.Item label={label} value={index} key={index} />
+              <Picker.Item
+                label={label}
+                value={index}
+                key={index}
+                style={{
+                  fontSize: screenHeight * 0.02,
+                  padding: screenWidth * 0.02,
+                }}
+              />
             ))}
           </Picker>
         </View>

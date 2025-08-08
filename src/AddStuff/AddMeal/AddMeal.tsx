@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput, View, Text, ScrollView } from 'react-native';
+import {
+  Button,
+  TextInput,
+  View,
+  Text,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import { styles } from '../../App';
 import { useTheme } from '../../Themes';
 import {
@@ -16,6 +23,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export const AddMeal = () => {
   const { theme } = useTheme();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const nav = useNavigation();
   const typeOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
   const [type, setType] = useState(0);
@@ -51,23 +59,44 @@ export const AddMeal = () => {
         },
       ]}
     >
-      <Picker
-        selectedValue={type}
-        onValueChange={(itemValue, itemIndex) => {
-          setType(itemValue);
-        }}
-        prompt="What are you adding:"
-        style={{
-          height: 50,
-          width: '80%',
-          color: theme.backgroundColor,
-          backgroundColor: theme.Progress2,
-        }}
+      <View
+        style={[
+          styles.container,
+          {
+            width: '80%',
+            borderRadius: screenWidth * 0.02,
+            backgroundColor: theme.h1Color,
+            marginHorizontal: '10%',
+            overflow: 'hidden',
+          },
+        ]}
       >
-        {typeOptions.map((label, index) => (
-          <Picker.Item label={label} value={index} key={index} />
-        ))}
-      </Picker>
+        <Picker
+          selectedValue={type}
+          onValueChange={(itemValue, itemIndex) => {
+            setType(itemValue);
+          }}
+          prompt="What are you adding:"
+          style={{
+            width: '100%',
+            color: theme.backgroundColor,
+            backgroundColor: theme.h1Color,
+          }}
+        >
+          {typeOptions.map((label, index) => (
+            <Picker.Item
+              label={label}
+              value={index}
+              key={index}
+              style={{
+                fontSize: screenHeight * 0.02,
+                padding: screenWidth * 0.02,
+              }}
+            />
+          ))}
+        </Picker>
+      </View>
+
       <View style={{ width: '80%' }}>
         <MultiSelect
           hideTags
@@ -78,29 +107,29 @@ export const AddMeal = () => {
           searchInputPlaceholderText="Search Foods..."
           displayKey="name"
           submitButtonText="Select"
-          submitButtonColor={theme.Progress2}
+          submitButtonColor={theme.h1Color}
           noItemsText="Add food before searching"
           searchIcon={
             <FontAwesomeIcon
               icon={faSearch}
               style={{
                 color: theme.backgroundColor,
-                backgroundColor: theme.Progress2,
+                backgroundColor: theme.h1Color,
               }}
             />
           }
           selectedItemIconColor={theme.Select2}
           selectedItemTextColor={theme.Select2}
           itemTextColor={theme.Select1}
-          styleMainWrapper={{ backgroundColor: theme.Progress2 }}
+          styleMainWrapper={{ backgroundColor: theme.h1Color }}
           searchInputStyle={{
-            backgroundColor: theme.Progress2,
-            color: theme.Progress2,
+            backgroundColor: theme.h1Color,
+            color: theme.h1Color,
           }}
-          styleDropdownMenu={{ backgroundColor: theme.Progress2 }}
-          styleDropdownMenuSubsection={{ backgroundColor: theme.Progress2 }}
-          styleRowList={{ backgroundColor: theme.Progress2 }}
-          styleListContainer={{ backgroundColor: theme.Progress2 }}
+          styleDropdownMenu={{ backgroundColor: theme.h1Color }}
+          styleDropdownMenuSubsection={{ backgroundColor: theme.h1Color }}
+          styleRowList={{ backgroundColor: theme.h1Color }}
+          styleListContainer={{ backgroundColor: theme.h1Color }}
           textColor={theme.backgroundColor}
         />
       </View>

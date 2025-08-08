@@ -1,9 +1,8 @@
-import React, { act, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   useWindowDimensions,
-  Button,
   TextInput,
   Switch,
   Pressable,
@@ -13,7 +12,6 @@ import { styles } from '../App';
 import { useTheme, themes } from '../Themes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SettingFeet } from './Setting Feet';
-import { useGoal } from '../Track';
 import { ManualSettings } from './Modes/Manual';
 import { BasicSettings } from './Modes/Basic';
 

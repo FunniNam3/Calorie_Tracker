@@ -56,10 +56,26 @@ function App() {
         <ProgressProvider>
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Main" component={Main} />
-              <Stack.Screen name="AddMeal" component={AddStuff} />
-              <Stack.Screen name="Meals" component={List} />
-              <Stack.Screen name="Settings" component={Settings} />
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{ animation: 'fade_from_bottom' }}
+              />
+              <Stack.Screen
+                name="AddMeal"
+                component={AddStuff}
+                options={{ animation: 'fade_from_bottom' }}
+              />
+              <Stack.Screen
+                name="Meals"
+                component={List}
+                options={{ animation: 'slide_from_left' }}
+              />
+              <Stack.Screen
+                name="Settings"
+                component={Settings}
+                options={{ animation: 'slide_from_right' }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </ProgressProvider>

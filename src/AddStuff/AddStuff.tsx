@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { styles } from '../App';
 import { useTheme } from '../Themes';
 import { AddFeet } from './AddFeet';
@@ -11,6 +11,7 @@ import { AddMeal } from './AddMeal/AddMeal';
 export const AddStuff = () => {
   const mealOptions = ['Meal', 'Food'];
   const { theme } = useTheme();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const [type, setType] = useState(0);
 
   return (
@@ -49,7 +50,18 @@ export const AddStuff = () => {
           >
             What to add:
           </Text>
-          <View style={[styles.container, { flex: 1, width: '100%' }]}>
+          <View
+            style={[
+              styles.container,
+              {
+                width: '80%',
+                borderRadius: screenWidth * 0.02,
+                backgroundColor: theme.h1Color,
+                marginHorizontal: '10%',
+                overflow: 'hidden',
+              },
+            ]}
+          >
             <Picker
               selectedValue={type}
               onValueChange={(itemValue, itemIndex) => {
@@ -57,15 +69,21 @@ export const AddStuff = () => {
               }}
               prompt="What are you adding:"
               style={{
-                height: 50,
                 width: '100%',
                 color: theme.backgroundColor,
-                backgroundColor: theme.Progress2,
-                maxWidth: '80%',
+                backgroundColor: theme.h1Color,
               }}
             >
               {mealOptions.map((label, index) => (
-                <Picker.Item label={label} value={index} key={index} />
+                <Picker.Item
+                  label={label}
+                  value={index}
+                  key={index}
+                  style={{
+                    fontSize: screenHeight * 0.02,
+                    padding: screenWidth * 0.02,
+                  }}
+                />
               ))}
             </Picker>
           </View>

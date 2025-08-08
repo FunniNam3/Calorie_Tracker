@@ -170,7 +170,7 @@ export const saveFoodItems = async (
   foodItems: FoodItem[],
 ) => {
   const insertQuery =
-    `INSERT OR REPLACE INTO ${foodtable}(id, name, calories, protein, fiber` +
+    `INSERT OR REPLACE INTO ${foodtable}(id, name, calories, protein, fat` +
     foodItems
       .map(
         i =>
@@ -184,7 +184,7 @@ export const saveFoodItems = async (
 export const saveFoodItem = async (db: SQLiteDatabase, foodItem: FoodItem) => {
   const insertQuery = `
     INSERT OR REPLACE INTO ${foodtable}
-    (name, calories, carbs, protein, fiber)
+    (name, calories, carbs, protein, fat)
     VALUES (?, ?, ?, ?, ?);
   `;
 
@@ -204,7 +204,7 @@ export const saveMealItems = async (
   mealItems: MealItem[],
 ) => {
   const insertQuery =
-    `INSERT OR REPLACE INTO ${mealtable}(day, type, foods, servings, calories, carbs, protein, fiber` +
+    `INSERT OR REPLACE INTO ${mealtable}(day, type, foods, servings, calories, carbs, protein, fat` +
     mealItems
       .map(
         i =>
@@ -218,7 +218,7 @@ export const saveMealItems = async (
 export const saveMealItem = async (db: SQLiteDatabase, mealItem: MealItem) => {
   const insertQuery = `
     INSERT OR REPLACE INTO ${mealtable}
-    (day, type, foods, servings, calories, carbs, protein, fiber)
+    (day, type, foods, servings, calories, carbs, protein, fat)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?);
   `;
 
