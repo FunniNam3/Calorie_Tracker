@@ -1,18 +1,12 @@
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Main from './Main_Page/Main';
-import { ThemeProvider, themes } from './Themes';
+import { ThemeProvider } from './Themes';
 import { GoalProvider, ProgressProvider } from './Track';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AddStuff } from './AddStuff/AddStuff';
-import {
-  createTables,
-  deleteFoodItem,
-  deleteFoodTable,
-  deleteMealTable,
-  getDBConnection,
-} from './db-functions';
+import { createTables, getDBConnection } from './db-functions';
 import { List } from './Meals/List';
 import { Settings } from './Settings/Settings';
 

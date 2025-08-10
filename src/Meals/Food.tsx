@@ -13,6 +13,7 @@ import { deleteFoodItem, getDBConnection, getFoodItems } from '../db-functions';
 import { useTheme } from '../Themes';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { styles } from '../App';
 
 export const Foods = () => {
   const [foods, setFoods] = useState<FoodItem[]>([]);
@@ -185,7 +186,7 @@ export const Foods = () => {
                 fontWeight: 400,
               }}
             >
-              To add foods press add item button at the bottom
+              To add foods press add item button
             </Text>
           </View>
         }

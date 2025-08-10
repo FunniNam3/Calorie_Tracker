@@ -272,12 +272,13 @@ export const Settings = () => {
                     setAge(numText);
                   }}
                   style={{
-                    backgroundColor: theme.Progress2,
+                    backgroundColor: theme.h1Color,
                     color: theme.backgroundColor,
-                    minWidth: '50%',
-                    textAlign: 'right',
                     padding: screenWidth * 0.02,
                     borderRadius: screenWidth * 0.02,
+                    fontSize: screenHeight * 0.02,
+                    minWidth: '50%',
+                    textAlign: 'right',
                   }}
                   keyboardType="decimal-pad"
                 />
@@ -301,12 +302,13 @@ export const Settings = () => {
                     setHeight(numText);
                   }}
                   style={{
-                    backgroundColor: theme.Progress2,
+                    backgroundColor: theme.h1Color,
                     color: theme.backgroundColor,
-                    minWidth: '50%',
-                    textAlign: 'right',
                     padding: screenWidth * 0.02,
                     borderRadius: screenWidth * 0.02,
+                    fontSize: screenHeight * 0.02,
+                    minWidth: '50%',
+                    textAlign: 'right',
                   }}
                   keyboardType="decimal-pad"
                 />
@@ -330,12 +332,13 @@ export const Settings = () => {
                     setWeight(numText);
                   }}
                   style={{
-                    backgroundColor: theme.Progress2,
+                    backgroundColor: theme.h1Color,
                     color: theme.backgroundColor,
-                    minWidth: '50%',
-                    textAlign: 'right',
                     padding: screenWidth * 0.02,
                     borderRadius: screenWidth * 0.02,
+                    fontSize: screenHeight * 0.02,
+                    minWidth: '50%',
+                    textAlign: 'right',
                   }}
                   keyboardType="decimal-pad"
                 />

@@ -30,15 +30,15 @@ export const List = () => {
           marginTop: 70,
           width: '100%',
           flexDirection: 'column',
-          gap: 25,
           flex: 1,
         }}
       >
         <Text
           style={{
             color: theme.h1Color,
-            fontSize: 30,
-            paddingHorizontal: 40,
+            fontSize: 40,
+            paddingHorizontal: '10%',
+            fontWeight: 600,
           }}
         >
           Item Search

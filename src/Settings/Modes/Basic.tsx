@@ -70,12 +70,14 @@ export const BasicSettings: React.FC<props> = ({
           Activity Level
         </Text>
         <View
-          style={{
-            minWidth: '50%',
-            borderRadius: screenWidth * 0.02,
-            backgroundColor: theme.Progress2,
-            justifyContent: 'center',
-          }}
+          style={[
+            {
+              width: '50%',
+              borderRadius: screenWidth * 0.02,
+              backgroundColor: theme.h1Color,
+              overflow: 'hidden',
+            },
+          ]}
         >
           <Picker
             selectedValue={activity}
@@ -83,10 +85,22 @@ export const BasicSettings: React.FC<props> = ({
               setActivity(itemValue);
             }}
             prompt="What are you adding:"
-            style={{ color: theme.backgroundColor }}
+            style={{
+              backgroundColor: theme.h1Color,
+              color: theme.backgroundColor,
+              textAlign: 'left',
+            }}
           >
             {activityOptions.map((label, index) => (
-              <Picker.Item label={label} value={index} key={index} />
+              <Picker.Item
+                label={label}
+                value={index}
+                key={index}
+                style={{
+                  fontSize: screenHeight * 0.015,
+                  padding: screenWidth * 0.02,
+                }}
+              />
             ))}
           </Picker>
         </View>
@@ -104,10 +118,10 @@ export const BasicSettings: React.FC<props> = ({
         </Text>
         <View
           style={{
-            minWidth: '50%',
+            width: '50%',
             borderRadius: screenWidth * 0.02,
-            backgroundColor: theme.Progress2,
-            justifyContent: 'center',
+            backgroundColor: theme.h1Color,
+            overflow: 'hidden',
           }}
         >
           <Picker
@@ -116,10 +130,22 @@ export const BasicSettings: React.FC<props> = ({
               setObjective(itemValue);
             }}
             prompt="What are you adding:"
-            style={{ color: theme.backgroundColor }}
+            style={{
+              backgroundColor: theme.h1Color,
+              color: theme.backgroundColor,
+              textAlign: 'left',
+            }}
           >
             {obvjectiveOptions.map((label, index) => (
-              <Picker.Item label={label} value={index} key={index} />
+              <Picker.Item
+                label={label}
+                value={index}
+                key={index}
+                style={{
+                  fontSize: screenHeight * 0.015,
+                  padding: screenWidth * 0.02,
+                }}
+              />
             ))}
           </Picker>
         </View>

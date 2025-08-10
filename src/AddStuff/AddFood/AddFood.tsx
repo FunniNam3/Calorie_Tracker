@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { Button, TextInput, useWindowDimensions, View } from 'react-native';
 import { styles } from '../../App';
 import { useTheme } from '../../Themes';
 import { getDBConnection, saveFoodItem } from '../../db-functions';
@@ -14,16 +14,32 @@ export const AddFood = () => {
   const [prot, setProt] = useState('');
   const [fat, setFat] = useState('');
   const nav = useNavigation();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   return (
-    <View style={[styles.container, { flex: 1, width: '100%', gap: 20 }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          flex: 1,
+          width: '100%',
+          gap: '5%',
+          justifyContent: 'flex-start',
+          marginTop: '5%',
+        },
+      ]}
+    >
       <TextInput
         placeholder="Name"
         value={name}
         onChangeText={setName}
         style={{
-          backgroundColor: theme.Progress2,
+          backgroundColor: theme.h1Color,
           color: theme.backgroundColor,
+          textAlign: 'left',
+          padding: screenWidth * 0.02,
+          borderRadius: screenWidth * 0.02,
+          fontSize: screenHeight * 0.02,
           width: '80%',
         }}
       />
@@ -35,8 +51,12 @@ export const AddFood = () => {
           setCal(numText);
         }}
         style={{
-          backgroundColor: theme.Progress2,
+          backgroundColor: theme.h1Color,
           color: theme.backgroundColor,
+          textAlign: 'left',
+          padding: screenWidth * 0.02,
+          borderRadius: screenWidth * 0.02,
+          fontSize: screenHeight * 0.02,
           width: '80%',
         }}
         keyboardType="decimal-pad"
@@ -49,8 +69,12 @@ export const AddFood = () => {
           setCarb(numText);
         }}
         style={{
-          backgroundColor: theme.Progress2,
+          backgroundColor: theme.h1Color,
           color: theme.backgroundColor,
+          textAlign: 'left',
+          padding: screenWidth * 0.02,
+          borderRadius: screenWidth * 0.02,
+          fontSize: screenHeight * 0.02,
           width: '80%',
         }}
         keyboardType="decimal-pad"
@@ -63,8 +87,12 @@ export const AddFood = () => {
           setProt(numText);
         }}
         style={{
-          backgroundColor: theme.Progress2,
+          backgroundColor: theme.h1Color,
           color: theme.backgroundColor,
+          textAlign: 'left',
+          padding: screenWidth * 0.02,
+          borderRadius: screenWidth * 0.02,
+          fontSize: screenHeight * 0.02,
           width: '80%',
         }}
         keyboardType="decimal-pad"
@@ -77,8 +105,12 @@ export const AddFood = () => {
           setFat(numText);
         }}
         style={{
-          backgroundColor: theme.Progress2,
+          backgroundColor: theme.h1Color,
           color: theme.backgroundColor,
+          textAlign: 'left',
+          padding: screenWidth * 0.02,
+          borderRadius: screenWidth * 0.02,
+          fontSize: screenHeight * 0.02,
           width: '80%',
         }}
         keyboardType="decimal-pad"

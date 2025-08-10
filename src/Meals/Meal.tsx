@@ -47,7 +47,6 @@ export const Meals = () => {
       }}
     >
       <Pressable
-        style={{ marginBottom: '7%' }}
         onPress={() => {
           setShow(true);
         }}
@@ -64,9 +63,10 @@ export const Meals = () => {
         <View
           style={{
             backgroundColor: theme.h1Color,
-            borderRadius: screenWidth * 0.03,
+            borderRadius: screenWidth * 0.02,
             padding: screenWidth * 0.02,
             paddingHorizontal: screenWidth * 0.03,
+            marginBottom: screenHeight * 0.02,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -98,10 +98,6 @@ export const Meals = () => {
           onChange={(event, selectedDate) => {
             if (event.type === 'set' && selectedDate) {
               setFilter(selectedDate);
-            }
-            // Optional: handle dismissed
-            if (event.type === 'dismissed') {
-              console.log('Picker closed without selection');
             }
             setShow(false);
           }}
