@@ -71,10 +71,12 @@ export const Foods = () => {
         }}
       />
       <FlatList
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ flexGrow: 1 }}
         scrollEnabled
         data={foods}
         keyExtractor={item => item.id.toString()}
-        ItemSeparatorComponent={() => <View style={{ height: '5%' }} />}
+        ItemSeparatorComponent={() => <View style={{ height: '2%' }} />}
         renderItem={({ item }) => {
           if (item.name.includes(filter)) {
             return (
