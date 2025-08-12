@@ -7,6 +7,7 @@ import {
   Alert,
   useWindowDimensions,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { MealItem } from '../Items'; // Adjust path if needed
 import { deleteMealItem, getDBConnection, getMealItems } from '../db-functions';
@@ -103,71 +104,68 @@ export const Meals = () => {
           }}
         />
       )}
-
-      <FlatList
-        scrollEnabled
-        data={meals}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => {
-          if (item.day == filter.toLocaleDateString()) {
-            return (
-              <View style={{ padding: 10, flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      color: theme.h1Color,
-                      fontSize: 20,
-                      fontWeight: 500,
+      <ScrollView style={{ maxHeight: '80%' }}>
+        {meals.length != 0 &&
+          meals.map(item => {
+            if (item.day == filter.toLocaleDateString()) {
+              return (
+                <View style={{ padding: 10, flexDirection: 'row' }}>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={{
+                        color: theme.h1Color,
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}
+                    >
+                      day: {item.day}
+                    </Text>
+                    <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
+                      type: {typeOptions[item.type]}
+                    </Text>
+                    <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
+                      foods: {item.foods}
+                    </Text>
+                    <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
+                      servings: {item.servings}
+                    </Text>
+                    <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
+                      calories: {item.calories}
+                    </Text>
+                  </View>
+                  <Pressable
+                    onPress={() => {
+                      Alert.alert(
+                        'Are you sure?',
+                        'This cannot be undone.\n You will never see this again.',
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'OK',
+                            onPress: async () => {
+                              const db = await getDBConnection();
+                              await deleteMealItem(db, item.id);
+                              const Meals = await getMealItems(db);
+                              setMeals(Meals);
+                            },
+                          },
+                        ],
+                        { cancelable: true },
+                      );
                     }}
                   >
-                    day: {item.day}
-                  </Text>
-                  <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
-                    type: {typeOptions[item.type]}
-                  </Text>
-                  <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
-                    foods: {item.foods}
-                  </Text>
-                  <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
-                    servings: {item.servings}
-                  </Text>
-                  <Text style={{ color: theme.h2Color, fontWeight: 500 }}>
-                    calories: {item.calories}
-                  </Text>
+                    <FontAwesomeIcon icon={faX} color={theme.h1Color} />
+                  </Pressable>
                 </View>
-                <Pressable
-                  onPress={() => {
-                    Alert.alert(
-                      'Are you sure?',
-                      'This cannot be undone.\n You will never see this again.',
-                      [
-                        {
-                          text: 'Cancel',
-                          onPress: () => console.log('Cancel Pressed'),
-                          style: 'cancel',
-                        },
-                        {
-                          text: 'OK',
-                          onPress: async () => {
-                            const db = await getDBConnection();
-                            await deleteMealItem(db, item.id);
-                            const Meals = await getMealItems(db);
-                            setMeals(Meals);
-                          },
-                        },
-                      ],
-                      { cancelable: true },
-                    );
-                  }}
-                >
-                  <FontAwesomeIcon icon={faX} color={theme.h1Color} />
-                </Pressable>
-              </View>
-            );
-          }
-          return <></>;
-        }}
-        ListEmptyComponent={
+              );
+            }
+            return <></>;
+          })}
+        {meals.length == 0 && (
           <View>
             <Text
               style={{
@@ -190,8 +188,8 @@ export const Meals = () => {
               To add meals press add item button
             </Text>
           </View>
-        }
-      />
+        )}
+      </ScrollView>
     </View>
   );
 };

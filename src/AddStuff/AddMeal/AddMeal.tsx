@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   TextInput,
   View,
   Text,
@@ -183,6 +182,7 @@ export const AddMeal = () => {
             justifyContent: 'center',
             alignContent: 'center',
             alignItems: 'center',
+            borderRadius: screenWidth * 0.02,
           }}
           onPress={async () => {
             console.error('pressed');

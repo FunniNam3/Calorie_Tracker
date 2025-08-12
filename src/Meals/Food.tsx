@@ -7,6 +7,7 @@ import {
   Pressable,
   useWindowDimensions,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { FoodItem } from '../Items';
 import { deleteFoodItem, getDBConnection, getFoodItems } from '../db-functions';
@@ -70,15 +71,9 @@ export const Foods = () => {
           marginBottom: screenHeight * 0.02,
         }}
       />
-      <FlatList
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ flexGrow: 1 }}
-        scrollEnabled
-        data={foods}
-        keyExtractor={item => item.id.toString()}
-        ItemSeparatorComponent={() => <View style={{ height: '2%' }} />}
-        renderItem={({ item }) => {
-          if (item.name.includes(filter)) {
+      <ScrollView style={{ maxHeight: '80%' }}>
+        {foods.length != 0 &&
+          foods.map(item => {
             return (
               <View style={{ paddingHorizontal: '5%', width: '100%' }}>
                 <View style={{ flexDirection: 'row', flex: 1, width: '100%' }}>
@@ -165,10 +160,8 @@ export const Foods = () => {
                 </Text>
               </View>
             );
-          }
-          return <></>;
-        }}
-        ListEmptyComponent={
+          })}
+        {foods.length == 0 && (
           <View>
             <Text
               style={{
@@ -191,8 +184,25 @@ export const Foods = () => {
               To add foods press add item button
             </Text>
           </View>
+        )}
+      </ScrollView>
+      {/* <FlatList
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ flexGrow: 1, height: 100 }}
+        scrollEnabled
+        data={foods}
+        keyExtractor={item => item.id.toString()}
+        ItemSeparatorComponent={() => <View style={{ height: '2%' }} />}
+        renderItem={({ item }) => {
+          if (item.name.includes(filter)) {
+            
+          }
+          return <></>;
+        }}
+        ListEmptyComponent={
+          
         }
-      />
+      /> */}
     </View>
   );
 };
