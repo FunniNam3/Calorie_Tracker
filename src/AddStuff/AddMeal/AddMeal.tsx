@@ -185,7 +185,6 @@ export const AddMeal = () => {
             borderRadius: screenWidth * 0.02,
           }}
           onPress={async () => {
-            console.error('pressed');
             const selectedFoodObjects = selectedFoods
               .map(id => foods.find(f => f.id === id))
               .filter(Boolean) as FoodItem[];

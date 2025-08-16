@@ -27,6 +27,7 @@ export const Settings = () => {
   const [weight, setWeight] = useState('0');
   const [activity, setActivity] = useState(0);
   const [objective, setObjective] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     const getStats = async () => {
@@ -65,6 +66,12 @@ export const Settings = () => {
         setObjective(Number(tempObjective));
       } catch (error) {
         setObjective(0);
+      }
+      try {
+        const balance = await AsyncStorage.getItem('Balance');
+        setBalance(Number(balance));
+      } catch (error) {
+        setBalance(0);
       }
     };
     getStats();
@@ -116,7 +123,7 @@ export const Settings = () => {
             gap: 25,
           }}
         >
-          <View style={{ gap: screenHeight * 0.01 }}>
+          <View style={{ gap: screenHeight * 0.01 }} key={'themes'}>
             <Text
               style={{
                 fontSize: screenWidth * 0.05,
@@ -164,6 +171,7 @@ export const Settings = () => {
               gap: screenHeight * 0.02,
               marginTop: screenHeight * 0.02,
             }}
+            key={'Mode'}
           >
             <View
               style={{
@@ -353,6 +361,8 @@ export const Settings = () => {
                   setObjective={setObjective}
                   activity={activity}
                   setActivity={setActivity}
+                  balance={balance}
+                  setBalance={setBalance}
                 />
               )}
               {manualMode && (
